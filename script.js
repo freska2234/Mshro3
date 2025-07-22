@@ -5,6 +5,7 @@
 // ---------------------------------------------------------------------------------
 // 1. DATA
 // ---------------------------------------------------------------------------------
+let recentOrders = [];
 
 const productsData = {
   products: [
@@ -38,11 +39,11 @@ const productsData = {
         "المنشأ: مصر",
         "العناية: غسيل آلة عادي",
         "المقاسات المتاحة: S, M, L, XL, XXL",
-        "الألوان المتاحة: أزرق، أسود، أبيض"
+        "الألوان المتاحة: أزرق، أسود، أبيض",
       ],
       warranty: "ضمان الجودة لمدة 30 يوم",
       returnPolicy: "إمكانية الاسترداد خلال 14 يوم من الاستلام",
-      category: "ملابس"
+      category: "ملابس",
     },
     {
       id: 2,
@@ -74,11 +75,11 @@ const productsData = {
         "النعل: مطاط عالي الجودة",
         "التبطين: فوم الذاكرة للراحة",
         "الاستخدام: جري، تدريب، رياضة يومية",
-        "الألوان المتاحة: أسود، أبيض، أحمر"
+        "الألوان المتاحة: أسود، أبيض، أحمر",
       ],
       warranty: "ضمان الجودة لمدة 6 أشهر",
       returnPolicy: "إمكانية الاسترداد خلال 30 يوم من الاستلام",
-      category: "أحذية"
+      category: "أحذية",
     },
     {
       id: 3,
@@ -110,11 +111,11 @@ const productsData = {
         "البطارية: تدوم حتى 7 أيام",
         "الاتصال: Bluetooth 5.0, WiFi, NFC",
         "مقاومة الماء: حتى 50 متر",
-        "الميزات: مراقب نبضات القلب، تتبع النوم، GPS"
+        "الميزات: مراقب نبضات القلب، تتبع النوم، GPS",
       ],
       warranty: "ضمان دولي لمدة سنتين",
       returnPolicy: "إمكانية الاسترداد خلال 15 يوم من الاستلام",
-      category: "إلكترونيات"
+      category: "إلكترونيات",
     },
     {
       id: 4,
@@ -145,11 +146,11 @@ const productsData = {
         "الأبعاد: 40×30×15 سم",
         "الإقفال: سحاب معدني",
         "الجيوب: جيب أمامي، جيب داخلي بسحاب",
-        "الألوان المتاحة: بني، أسود"
+        "الألوان المتاحة: بني، أسود",
       ],
       warranty: "ضمان الصناعة لمدة سنة واحدة",
       returnPolicy: "إمكانية الاسترداد خلال 21 يوم من الاستلام",
-      category: "إكسسوارات"
+      category: "إكسسوارات",
     },
     {
       id: 5,
@@ -181,12 +182,13 @@ const productsData = {
         "البطارية: 30 ساعة تشغيل",
         "المقاومة: IPX4 ضد الماء",
         "خاصية إلغاء الضوضاء: نعم",
-        "الألوان المتاحة: أسود، أبيض، أزرق"
+        "الألوان المتاحة: أسود، أبيض، أزرق",
       ],
       warranty: "ضمان دولي لمدة سنة واحدة",
       returnPolicy: "إمكانية الاسترداد خلال 14 يوم من الاستلام",
-      category: "إلكترونيات"
+      category: "إلكترونيات",
     },
+    
     {
       id: 6,
       name: "نظارة شمسية عصرية",
@@ -216,19 +218,382 @@ const productsData = {
         "الإطار: معدن خفيف الوزن",
         "العدسات: بولاريزد",
         "شكل الإطار: دائري / مربع (متاح تصميمات متعددة)",
-        "الألوان المتاحة: أسود، ذهبي"
+        "الألوان المتاحة: أسود، ذهبي",
       ],
       warranty: "ضمان الصناعة لمدة 6 أشهر",
       returnPolicy: "إمكانية الاسترداد خلال 10 أيام من الاستلام",
-      category: "إكسسوارات"
+      category: "إكسسوارات",
     },
   ],
 };
 
 // إعدادات بوت التليجرام
 const TELEGRAM_CONFIG = {
-  BOT_TOKEN: '7254345779:AAF2IY-f42Vj4Zgai5dlCK7yxpWhz4_S7Ac', // استبدل بـ BOT TOKEN الخاص بك
-  CHAT_ID: '5895491379' // استبدل بـ CHAT ID الخاص بك
+  BOT_TOKEN: "7254345779:AAF2IY-f42Vj4Zgai5dlCK7yxpWhz4_S7Ac", // استبدل بـ BOT TOKEN الخاص بك
+  CHAT_ID: "5895491379", // استبدل بـ CHAT ID الخاص بك
+};
+
+// === بيانات المحافظات والمدن ===
+const CITIES_DATA = {
+  القاهرة: [
+    "المعادى",
+    "التجمع",
+    "مدينة نصر",
+    "شبرا مصر",
+    "وسط البلد",
+    "مصر القديمة",
+    "رمسيس",
+    "غمرة",
+    "المطرية",
+    "الويلي",
+    "الشرابية",
+    "حدائق القبة",
+    "الاميرية",
+    "عين شمس",
+    "عزبة النخل",
+    "جسر السويس",
+    "المرج",
+    "السلام",
+    "مصر الجديدة",
+    "مدينة الشروق",
+    "مدينتي",
+    "مدينة بدر",
+    "الرحاب",
+    "القطامية",
+    "المقطم",
+    "حلوان",
+    "دار السلام",
+    "البساتين",
+    "شبرا الخيمه",
+    "حلميه الزيتون",
+    "العباسيه",
+    "السيده زينب",
+    "السيده عائشه",
+    "منشأة ناصر",
+    "الجمالية",
+    "الزاويه الحمراء",
+    "النزهه",
+    "مدينه المستقبل",
+  ],
+  الجيزة: [
+    "السادس من أكتوبر",
+    "الشيخ زايد",
+    "الحوامدية",
+    "البدرشين",
+    "الصف",
+    "أطفيح",
+    "العياط",
+    "منشأة القناطر",
+    "أوسيم",
+    "كرداسة",
+    "أبو النمرس",
+    "إمبابة",
+    "الهرم",
+    "فيصل",
+    "المهندسين",
+    "العمرانيه",
+    "الدقي",
+    "حدائق الاهرام",
+    "حدائق اكتوبر",
+    "صفط اللبن",
+    "ارض اللواء",
+    "المنيب",
+    "المنيل",
+    "الوراق",
+    "بولاق الدكرور",
+    "الزمالك",
+  ],
+  الإسكندرية: [
+    "الإسكندرية",
+    "برج العرب",
+    "برج العرب الجديدة",
+    "العامرية",
+    "أبيس",
+    "فلمنج",
+    "ميامي",
+    "محرم بك",
+    "لوران",
+    "كرموز",
+    "سموحة",
+    "العصافرة",
+    "المندرة",
+    "سيدي بشر",
+    "السيوف",
+  ],
+  الدقهلية: [
+    "المنصورة",
+    "طلخا",
+    "ميت غمر",
+    "دكرنس",
+    "منية النصر",
+    "السنبلاوين",
+    "الكردي",
+    "بني عبيد",
+    "المنزلة",
+    "تمي الأمديد",
+    "الجمالية",
+    "شربين",
+    "المطرية",
+    "بلقاس",
+    "ميت سلسيل",
+    "جمصة",
+    "نبروه",
+    "اجا",
+  ],
+  "البحر الأحمر": [
+    "الغردقة",
+    "رأس غارب",
+    "سفاجا",
+    "القصير",
+    "مرسى علم",
+    "الدهار",
+    "دهب",
+  ],
+  البحيرة: [
+    "دمنهور",
+    "كفر الدوار",
+    "رشيد",
+    "إدكو",
+    "أبو المطامير",
+    "أبو حمص",
+    "الدلنجات",
+    "المحمودية",
+    "الرحمانية",
+    "إيتاي البارود",
+    "حوش عيسى",
+    "شبراخيت",
+    "كوم حمادة",
+    "بدر",
+    "وادي النطرون",
+    "النوبارية الجديدة",
+    "كوم امبو",
+  ],
+  الفيوم: [
+    "الفيوم",
+    "الفيوم الجديدة",
+    "طامية",
+    "سنورس",
+    "إطسا",
+    "إبشواي",
+    "يوسف الصديق",
+  ],
+  الغربية: [
+    "طنطا",
+    "المحلة الكبرى",
+    "كفر الزيات",
+    "زفتى",
+    "السنطة",
+    "قطور",
+    "بسيون",
+    "سمنود",
+  ],
+  الإسماعيلية: [
+    "الإسماعيلية",
+    "فايد",
+    "القنطرة شرق",
+    "القنطرة غرب",
+    "التل الكبير",
+    "أبو صوير",
+    "القصاصين الجديدة",
+  ],
+  المنوفية: [
+    "شبين الكوم",
+    "مدينة السادات",
+    "منوف",
+    "سرس الليان",
+    "أشمون",
+    "الباجور",
+    "قويسنا",
+    "بركة السبع",
+    "تلا",
+    "الشهداء",
+    "طنوب",
+  ],
+  المنيا: [
+    "المنيا",
+    "المنيا الجديدة",
+    "العدوة",
+    "مغاغة",
+    "بني مزار",
+    "مطاي",
+    "سمالوط",
+    "المدينة الفكرية",
+    "ملوي",
+    "دير مواس",
+  ],
+  القليوبية: [
+    "بنها",
+    "قليوب",
+    "القناطر الخيرية",
+    "الخانكة",
+    "كفر شكر",
+    "طوخ",
+    "قها",
+    "العبور",
+    "الخصوص",
+    "شبين القناطر",
+    "نقباس",
+    "كفر الشهاوي",
+    "الرملة",
+    "برشوم",
+    "ميت كنانه",
+    "كفر عرب",
+    "القليوبيه",
+    "الجبل الاصفر",
+  ],
+  "الوادي الجديد": ["الخارجة", "باريس", "موط", "الفرافرة", "بلاط", "الداخله"],
+  السويس: ["السويس", "حي الاربعين", "حي عتاقة", "حي الجناين", "حي فيصل"],
+  أسوان: [
+    "أسوان",
+    "أسوان الجديدة",
+    "دراو",
+    "كوم أمبو",
+    "نصر النوبة",
+    "كلابشة",
+    "إدفو",
+    "الرديسية",
+    "البصيلية",
+    "السباعية",
+    "ابوسمبل السياحية",
+  ],
+  أسيوط: [
+    "أسيوط",
+    "أسيوط الجديدة",
+    "ديروط",
+    "منفلوط",
+    "القوصية",
+    "أبنوب",
+    "أبو تيج",
+    "الغنايم",
+    "ساحل سليم",
+    "البداري",
+    "صدفا",
+  ],
+  "بني سويف": [
+    "بني سويف",
+    "بني سويف الجديدة",
+    "الواسطى",
+    "ناصر",
+    "إهناسيا",
+    "ببا",
+    "الفشن",
+    "سمسطا",
+  ],
+  بورسعيد: [
+    "بورسعيد",
+    "بورفؤاد",
+    "حي الشرق",
+    "حي الجنوب",
+    "حي المناخ",
+    "حي الضواحي",
+    "حي الزهور",
+    "حي العرب",
+  ],
+  دمياط: [
+    "دمياط",
+    "دمياط الجديدة",
+    "رأس البر",
+    "فارسكور",
+    "الزرقا",
+    "السرو",
+    "الروضة",
+    "كفر البطيخ",
+    "عزبة البرج",
+    "ميت أبو غالب",
+    "كفر سعد",
+  ],
+  الشرقية: [
+    "الزقازيق",
+    "العاشر من رمضان",
+    "منيا القمح",
+    "بلبيس",
+    "مشتول السوق",
+    "القنايات",
+    "أبو حماد",
+    "القرين",
+    "ههيا",
+    "أبو كبير",
+    "فاقوس",
+    "الصالحية الجديدة",
+    "الإبراهيمية",
+    "ديرب نجم",
+    "كفر صقر",
+    "أولاد صقر",
+    "الحسينية",
+    "صان الحجر القبلية",
+  ],
+  "جنوب سيناء": [
+    "الطور",
+    "شرم الشيخ",
+    "دهب",
+    "نويبع",
+    "طابا",
+    "أبو رديس",
+    "رأس سدر",
+  ],
+  "كفر الشيخ": [
+    "كفر الشيخ",
+    "دسوق",
+    "فوه",
+    "مطوبس",
+    "برج البرلس",
+    "بلطيم",
+    "مصيف بلطيم",
+    "الحامول",
+    "بيلا",
+    "الرياض",
+    "سيدي سالم",
+    "قلين",
+    "سيدي غازي",
+  ],
+  مطروح: [
+    "مرسى مطروح",
+    "الحمام",
+    "العلمين",
+    "الضبعة",
+    "النجيلة",
+    "سيدي براني",
+    "الساحل الشمالى",
+  ],
+  الأقصر: [
+    "الأقصر",
+    "الأقصر الجديدة",
+    "إسنا",
+    "طيبة الجديدة",
+    "الزينية",
+    "البياضية",
+    "القرنة",
+    "أرمنت",
+    "الطود",
+    "الأقالته",
+  ],
+  قنا: [
+    "قنا",
+    "قنا الجديدة",
+    "أبو تشت",
+    "نجع حمادي",
+    "دشنا",
+    "الوقف",
+    "قفط",
+    "نقادة",
+    "فرشوط",
+    "قوص",
+  ],
+  سوهاج: [
+    "سوهاج",
+    "سوهاج الجديدة",
+    "أخميم",
+    "أخميم الجديدة",
+    "البلينا",
+    "المراغة",
+    "المنشأة",
+    "دار السلام",
+    "جرجا",
+    "جهينة الغربية",
+    "ساقلته",
+    "طما",
+    "طهطا",
+  ],
 };
 
 // ---------------------------------------------------------------------------------
@@ -289,6 +654,13 @@ const StorageManager = {
     } catch (e) {
       return [];
     }
+  },
+   saveRecentOrders: (orders) => {
+    localStorage.setItem('recentOrders', JSON.stringify(orders));
+  },
+  loadRecentOrders: () => {
+    const orders = localStorage.getItem('recentOrders');
+    return orders ? JSON.parse(orders) : [];
   },
 };
 
@@ -398,13 +770,15 @@ function loadProducts() {
   let filtered = productsData.products;
 
   // Apply filters if any (initially all)
-  const searchTerm = document.getElementById("searchInput")?.value.toLowerCase() || "";
+  const searchTerm =
+    document.getElementById("searchInput")?.value.toLowerCase() || "";
   const category = document.getElementById("categoryFilter")?.value || "all";
   const priceRange = document.getElementById("priceFilter")?.value || "all";
 
-  filtered = productsData.products.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm) ||
-                          product.description.toLowerCase().includes(searchTerm);
+  filtered = productsData.products.filter((product) => {
+    const matchesSearch =
+      product.name.toLowerCase().includes(searchTerm) ||
+      product.description.toLowerCase().includes(searchTerm);
     const matchesCategory = category === "all" || product.category === category;
     let matchesPrice = true;
     if (priceRange === "under200") {
@@ -422,7 +796,6 @@ function loadProducts() {
     return;
   }
 
-
   filtered.forEach((product, index) => {
     setTimeout(() => {
       const productCardHTML = createProductCardHTML(product);
@@ -435,9 +808,8 @@ function loadProducts() {
 }
 
 function filterProducts() {
-    loadProducts(); // Simply re-load products with current filter values
+  loadProducts(); // Simply re-load products with current filter values
 }
-
 
 /**
  * Updates the cart count bubble in the header.
@@ -486,7 +858,9 @@ function updateCartUI() {
     subtotal += item.price * item.quantity;
     const cartItemHTML = `
             <div class="cart-item">
-                <button class="remove-item" onclick="removeItemFromCart(${item.id}, '${item.selectedColor}', '${item.selectedSize}')">
+                <button class="remove-item" onclick="removeItemFromCart(${
+                  item.id
+                }, '${item.selectedColor}', '${item.selectedSize}')">
                     <i class="fas fa-times-circle"></i>
                 </button>
                 <img src="${item.image}" alt="${item.name}">
@@ -495,12 +869,18 @@ function updateCartUI() {
                     <p>اللون: ${item.selectedColor || "غير محدد"}</p>
                     <p>المقاس: ${item.selectedSize || "غير محدد"}</p>
                     <div class="quantity-control">
-                        <button onclick="changeQuantity(${item.id}, '${item.selectedColor}', '${item.selectedSize}', -1)">-</button>
+                        <button onclick="changeQuantity(${item.id}, '${
+      item.selectedColor
+    }', '${item.selectedSize}', -1)">-</button>
                         <span>${item.quantity}</span>
-                        <button onclick="changeQuantity(${item.id}, '${item.selectedColor}', '${item.selectedSize}', 1)">+</button>
+                        <button onclick="changeQuantity(${item.id}, '${
+      item.selectedColor
+    }', '${item.selectedSize}', 1)">+</button>
                     </div>
                 </div>
-                <span class="cart-item-price">${item.price * item.quantity} جنيه</span>
+                <span class="cart-item-price">${
+                  item.price * item.quantity
+                } جنيه</span>
             </div>
         `;
     cartItemsEl.innerHTML += cartItemHTML;
@@ -541,11 +921,15 @@ function showProductDetail(productId) {
                       .map(
                         (color) => `
                         <div class="color-box" style="background-color: ${
-                          color.code === '#ffffff' ? '#eee; border: 1px solid #ccc;' : color.code
+                          color.code === "#ffffff"
+                            ? "#eee; border: 1px solid #ccc;"
+                            : color.code
                         };"
                             title="${color.name}"
                             data-color="${color.name}"
-                            onclick="selectOption('color', '${color.name}')"></div>
+                            onclick="selectOption('color', '${
+                              color.name
+                            }')"></div>
                     `
                       )
                       .join("")}
@@ -634,7 +1018,9 @@ function showProductDetail(productId) {
                 <button class="btn btn-primary btn-large" onclick="addToCartFromDetail()">
                     <i class="fas fa-cart-plus"></i> إضافة للسلة
                 </button>
-                <button class="btn btn-secondary btn-large favorite-btn ${favoriteButtonClass}" onclick="toggleFavorite(event, ${currentProduct.id}, true)">
+                <button class="btn btn-secondary btn-large favorite-btn ${favoriteButtonClass}" onclick="toggleFavorite(event, ${
+    currentProduct.id
+  }, true)">
                     <i class="${favoriteButtonIcon}"></i> ${favoriteButtonText}
                 </button>
             </div>
@@ -650,12 +1036,19 @@ function showProductDetail(productId) {
                 </div>
                 <div id="specs" class="tab-content hidden">
                     <ul>
-                        ${currentProduct.specifications.map(spec => `<li><i class="fas fa-check-circle"></i> ${spec}</li>`).join('')}
+                        ${currentProduct.specifications
+                          .map(
+                            (spec) =>
+                              `<li><i class="fas fa-check-circle"></i> ${spec}</li>`
+                          )
+                          .join("")}
                     </ul>
                 </div>
                 <div id="warranty" class="tab-content hidden">
                     <p><strong>الضمان:</strong> ${currentProduct.warranty}</p>
-                    <p><strong>سياسة الاسترجاع:</strong> ${currentProduct.returnPolicy}</p>
+                    <p><strong>سياسة الاسترجاع:</strong> ${
+                      currentProduct.returnPolicy
+                    }</p>
                 </div>
             </div>
         </div>
@@ -668,15 +1061,14 @@ function showProductDetail(productId) {
 
   // Pre-select first color/size if available
   if (currentProduct.colors && currentProduct.colors.length > 0) {
-    selectOption('color', currentProduct.colors[0].name);
+    selectOption("color", currentProduct.colors[0].name);
   }
   if (currentProduct.sizes && currentProduct.sizes.length > 0) {
-    selectOption('size', currentProduct.sizes[0]);
+    selectOption("size", currentProduct.sizes[0]);
   }
 
   modal.classList.remove("hidden");
 }
-
 
 /**
  * Changes the main image in the product detail modal.
@@ -743,7 +1135,6 @@ function changeDetailQuantity(delta) {
   quantity = Math.max(1, quantity + delta); // Quantity cannot be less than 1
   quantityEl.textContent = quantity;
 }
-
 
 /**
  * Hides a given modal.
@@ -815,10 +1206,14 @@ function toggleFavorite(event, productId, fromDetail = false) {
     const favBtn = event.currentTarget;
     if (favBtn) {
       favBtn.classList.toggle("active");
-      favBtn.querySelector('i').classList.toggle('fas');
-      favBtn.querySelector('i').classList.toggle('far');
-      favBtn.title = favorites.includes(productId) ? "إزالة من المفضلة" : "إضافة للمفضلة";
-      favBtn.innerHTML = favorites.includes(productId) ? '<i class="fas fa-heart"></i> إزالة من المفضلة' : '<i class="far fa-heart"></i> إضافة للمفضلة';
+      favBtn.querySelector("i").classList.toggle("fas");
+      favBtn.querySelector("i").classList.toggle("far");
+      favBtn.title = favorites.includes(productId)
+        ? "إزالة من المفضلة"
+        : "إضافة للمفضلة";
+      favBtn.innerHTML = favorites.includes(productId)
+        ? '<i class="fas fa-heart"></i> إزالة من المفضلة'
+        : '<i class="far fa-heart"></i> إضافة للمفضلة';
     }
   }
 }
@@ -859,7 +1254,12 @@ function addToCartFromDetail() {
  * @param {string} selectedColor - The selected color (optional).
  * @param {string} selectedSize - The selected size (optional).
  */
-function addToCart(productId, quantity = 1, selectedColor = "", selectedSize = "") {
+function addToCart(
+  productId,
+  quantity = 1,
+  selectedColor = "",
+  selectedSize = ""
+) {
   const product = productsData.products.find((p) => p.id === productId);
   if (!product) return;
 
@@ -900,7 +1300,10 @@ function quickAddToCart(productId) {
   if (!product) return;
 
   // If product has colors or sizes, show detail modal first
-  if ((product.colors && product.colors.length > 0) || (product.sizes && product.sizes.length > 0)) {
+  if (
+    (product.colors && product.colors.length > 0) ||
+    (product.sizes && product.sizes.length > 0)
+  ) {
     showProductDetail(productId);
     showToast("الرجاء اختيار الخيارات قبل الشراء.", "info");
   } else {
@@ -908,7 +1311,6 @@ function quickAddToCart(productId) {
     toggleCart(); // Open cart sidebar
   }
 }
-
 
 /**
  * Changes the quantity of an item in the cart.
@@ -1009,7 +1411,10 @@ function showCheckoutForm() {
  * @returns {number} - The shipping cost.
  */
 function calculateShipping() {
-  const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
   if (subtotal >= 1000) {
     return 0; // Free shipping for orders over 1000 EGP
   } else if (subtotal > 0) {
@@ -1018,17 +1423,37 @@ function calculateShipping() {
   return 0; // No shipping cost if cart is empty
 }
 
-
 /**
  * Sets up the event listener for the checkout form submission.
  */
 function setupOrderForm() {
   const checkoutForm = document.getElementById("checkoutForm");
+  const customerGovernorateSelect = document.getElementById(
+    "customerGovernorate"
+  );
+  const customerCitySelect = document.getElementById("customerCitySelect");
+
+  // Populate governorates on load
+  populateGovernorates(customerGovernorateSelect);
+
+  // Event listener for governorate selection
+  customerGovernorateSelect.addEventListener("change", () => {
+    populateCities(customerGovernorateSelect.value, customerCitySelect);
+    // Clear city selection and disable if no governorate selected
+    if (!customerGovernorateSelect.value) {
+      customerCitySelect.disabled = true;
+      customerCitySelect.innerHTML = '<option value="">اختر المدينة</option>';
+    } else {
+      customerCitySelect.disabled = false;
+    }
+  });
+
   if (checkoutForm) {
-    checkoutForm.addEventListener("submit", function (event) {
+    checkoutForm.addEventListener("submit", async function (event) {
       event.preventDefault(); // Prevent default form submission
 
-      if (validateForm()) {
+      if (validateCheckoutForm()) {
+        // Changed from validateForm to validateCheckoutForm
         submitOrder();
       } else {
         showToast("الرجاء مراجعة البيانات المدخلة.", "error");
@@ -1041,37 +1466,121 @@ function setupOrderForm() {
  * Validates the checkout form fields.
  * @returns {boolean} - True if form is valid, false otherwise.
  */
-function validateForm() {
-    let isValid = true;
-    const fields = [
-        { id: 'customerName', msg: 'الاسم كاملاً مطلوب.' },
-        { id: 'customerPhone', msg: 'رقم الهاتف مطلوب وصالح.', pattern: /^[0-9]{10,}$/ },
-        { id: 'customerAddress', msg: 'العنوان مطلوب.' },
-        { id: 'customerCity', msg: 'المدينة مطلوبة.' }
-    ];
+function validateCheckoutForm() {
+  // Renamed from validateForm to validateCheckoutForm
+  let isValid = true;
+  const customerName = document.getElementById("customerName");
+  const customerPhone = document.getElementById("customerPhone");
+  const customerGovernorate = document.getElementById("customerGovernorate"); // New
+  const customerCitySelect = document.getElementById("customerCitySelect"); // New
+  const customerAddress = document.getElementById("customerAddress");
 
-    fields.forEach(field => {
-        const input = document.getElementById(field.id);
-        const errorDiv = document.getElementById(field.id + 'Error');
-        errorDiv.textContent = ''; // Clear previous errors
-        input.classList.remove('invalid');
-        errorDiv.style.display = 'none';
+  // Validate Name
+  if (!customerName.value.trim()) {
+    displayError("customerNameError", "الاسم كاملاً مطلوب.");
+    isValid = false;
+  } else {
+    displayError("customerNameError", "");
+  }
 
-        if (!input.value.trim()) {
-            errorDiv.textContent = field.msg;
-            errorDiv.style.display = 'block';
-            input.classList.add('invalid');
-            isValid = false;
-        } else if (field.pattern && !field.pattern.test(input.value.trim())) {
-            errorDiv.textContent = field.msg;
-            errorDiv.style.display = 'block';
-            input.classList.add('invalid');
-            isValid = false;
-        }
-    });
-    return isValid;
+  // Validate Phone
+  const phonePattern = /^[0-9]{10,}$/;
+  if (!customerPhone.value.trim()) {
+    displayError("customerPhoneError", "رقم الهاتف مطلوب.");
+    isValid = false;
+  } else if (!phonePattern.test(customerPhone.value.trim())) {
+    displayError(
+      "customerPhoneError",
+      "الرجاء إدخال رقم هاتف صالح (10 أرقام على الأقل)."
+    );
+    isValid = false;
+  } else {
+    displayError("customerPhoneError", "");
+  }
+
+  // Validate Governorate
+  if (customerGovernorate.value === "") {
+    displayError("customerGovernorateError", "الرجاء اختيار المحافظة.");
+    isValid = false;
+  } else {
+    displayError("customerGovernorateError", "");
+  }
+
+  // Validate City
+  if (customerCitySelect.value === "") {
+    displayError("customerCitySelectError", "الرجاء اختيار المدينة.");
+    isValid = false;
+  } else {
+    displayError("customerCitySelectError", "");
+  }
+
+  // Validate Address
+  if (!customerAddress.value.trim()) {
+    displayError("customerAddressError", "العنوان مطلوب.");
+    isValid = false;
+  } else {
+    displayError("customerAddressError", "");
+  }
+
+  return isValid;
 }
 
+/**
+ * Helper function to display form errors.
+ * @param {string} elementId - The ID of the error message div.
+ * @param {string} message - The error message.
+ */
+function displayError(elementId, message) {
+  const errorDiv = document.getElementById(elementId);
+  if (errorDiv) {
+    errorDiv.textContent = message;
+    errorDiv.style.display = message ? "block" : "none";
+    const inputElement = errorDiv.previousElementSibling; // Assuming label/input is before error div
+    if (
+      inputElement &&
+      (inputElement.tagName === "INPUT" ||
+        inputElement.tagName === "TEXTAREA" ||
+        inputElement.tagName === "SELECT")
+    ) {
+      if (message) {
+        inputElement.classList.add("invalid");
+      } else {
+        inputElement.classList.remove("invalid");
+      }
+    }
+  }
+}
+
+/**
+ * Populates the governorate select element.
+ * @param {HTMLSelectElement} selectElement - The select element for governorates.
+ */
+function populateGovernorates(selectElement) {
+  selectElement.innerHTML = '<option value="">اختر المحافظة</option>'; // Keep default option
+  Object.keys(CITIES_DATA).forEach((governorate) => {
+    const option = document.createElement("option");
+    option.value = governorate;
+    option.textContent = governorate;
+    selectElement.appendChild(option);
+  });
+}
+
+/**
+ * Populates the city select element based on the selected governorate.
+ * @param {string} governorate - The selected governorate.
+ * @param {HTMLSelectElement} selectElement - The select element for cities.
+ */
+function populateCities(governorate, selectElement) {
+  selectElement.innerHTML = '<option value="">اختر المدينة</option>'; // Reset cities
+  if (governorate && CITIES_DATA[governorate]) {
+    CITIES_DATA[governorate].forEach((city) => {
+      const option = document.createElement("option");
+      option.value = city;
+      option.textContent = city;
+      selectElement.appendChild(option);
+    });
+  }
+}
 
 /**
  * Submits the order, simulates sending to Telegram, and resets cart.
@@ -1079,13 +1588,18 @@ function validateForm() {
 async function submitOrder() {
   const customerName = document.getElementById("customerName").value;
   const customerPhone = document.getElementById("customerPhone").value;
+  const customerGovernorate = document.getElementById(
+    "customerGovernorate"
+  ).value; // تحديث
+  const customerCity = document.getElementById("customerCitySelect").value; // تحديث
   const customerAddress = document.getElementById("customerAddress").value;
-  const customerCity = document.getElementById("customerCity").value;
   const shippingMethod = document.getElementById("shippingMethod").value;
   const finalTotal = document.getElementById("checkoutFinalTotal").textContent;
 
   const orderId = `#${Math.floor(10000 + Math.random() * 90000)}`; // Simple unique ID
-  const orderDate = new Date().toLocaleString("ar-EG", { timeZone: "Africa/Cairo" });
+  const orderDate = new Date().toLocaleString("ar-EG", {
+    timeZone: "Africa/Cairo",
+  });
 
   const orderDetails = {
     orderId: orderId,
@@ -1093,8 +1607,9 @@ async function submitOrder() {
     customer: {
       name: customerName,
       phone: customerPhone,
+      governorate: customerGovernorate, // إضافة المحافظة
+      city: customerCity, // إضافة المدينة
       address: customerAddress,
-      city: customerCity,
     },
     items: cart.map((item) => ({
       id: item.id,
@@ -1124,10 +1639,9 @@ async function submitOrder() {
     showToast("تم تأكيد طلبك بنجاح! رقم الطلب: " + orderId, "success");
     // Optionally show order tracking directly
     setTimeout(() => {
-        document.getElementById("orderIdInput").value = orderId;
-        trackOrder();
+      document.getElementById("orderIdInput").value = orderId;
+      trackOrder();
     }, 1000);
-
   } else {
     showToast("حدث خطأ أثناء إرسال الطلب. الرجاء المحاولة مرة أخرى.", "error");
   }
@@ -1145,7 +1659,9 @@ function formatOrderForTelegram(order) {
   message += `*بيانات العميل:*\n`;
   message += `الاسم: ${order.customer.name}\n`;
   message += `الهاتف: ${order.customer.phone}\n`;
-  message += `العنوان: ${order.customer.address}, ${order.customer.city}\n`;
+  message += `المحافظة: ${order.customer.governorate}\n`; // إضافة المحافظة
+  message += `المدينة: ${order.customer.city}\n`; // إضافة المدينة
+  message += `العنوان بالتفصيل: ${order.customer.address}\n`;
   message += `طريقة الشحن: ${order.shippingMethod}\n\n`;
   message += `*المنتجات:*\n`;
   order.items.forEach((item, index) => {
@@ -1174,26 +1690,34 @@ async function sendOrderToTelegram(message) {
   const params = new URLSearchParams({
     chat_id: CHAT_ID,
     text: message,
-    parse_mode: 'Markdown' // Use Markdown for formatting
+    parse_mode: "Markdown", // Use Markdown for formatting
   });
 
   try {
     const response = await fetch(`${url}?${params.toString()}`, {
-      method: 'GET', // Or POST with body, GET is simpler for testing
+      method: "GET", // Or POST with body, GET is simpler for testing
     });
     const data = await response.json();
     if (!response.ok) {
-        console.error("Telegram API Error:", data);
-        showToast("فشل إرسال الطلب إلى تيليجرام: " + (data.description || "خطأ غير معروف"), "error");
-        return false;
+      console.error("Telegram API Error:", data);
+      showToast(
+        "فشل إرسال الطلب إلى تيليجرام: " +
+          (data.description || "خطأ غير معروف"),
+        "error"
+      );
+      return false;
     }
     if (data.ok) {
-        console.log("Order sent to Telegram:", data);
-        return true;
+      console.log("Order sent to Telegram:", data);
+      return true;
     } else {
-        console.error("Failed to send order to Telegram:", data);
-        showToast("فشل إرسال الطلب إلى تيليجرام: " + (data.description || "خطأ غير معروف"), "error");
-        return false;
+      console.error("Failed to send order to Telegram:", data);
+      showToast(
+        "فشل إرسال الطلب إلى تيليجرام: " +
+          (data.description || "خطأ غير معروف"),
+        "error"
+      );
+      return false;
     }
   } catch (error) {
     console.error("Error sending message to Telegram:", error);
@@ -1209,8 +1733,8 @@ function trackOrder() {
   hideModal("checkoutModal"); // Ensure checkout is hidden
   hideModal("productDetailModal"); // Ensure product detail is hidden
   document.getElementById("orderTrackingModal").classList.remove("hidden");
-  document.getElementById("orderDetails").innerHTML = ''; // Clear previous results
-  document.getElementById("orderIdInput").value = ''; // Clear input
+  document.getElementById("orderDetails").innerHTML = ""; // Clear previous results
+  document.getElementById("orderIdInput").value = ""; // Clear input
 }
 
 /**
@@ -1231,25 +1755,35 @@ function findOrderDetails() {
   const order = orderHistory.find((o) => o.orderId === orderIdInput);
 
   if (order) {
-    let itemsHtml = order.items.map(item => `
+    let itemsHtml = order.items
+      .map(
+        (item) => `
         <li>
             ${item.name} (${item.quantity}x) - ${item.price} جنيه
-            ${item.color ? ` (لون: ${item.color})` : ''}
-            ${item.size ? ` (مقاس: ${item.size})` : ''}
+            ${item.color ? ` (لون: ${item.color})` : ""}
+            ${item.size ? ` (مقاس: ${item.size})` : ""}
         </li>
-    `).join('');
+    `
+      )
+      .join("");
 
     orderDetailsDiv.innerHTML = `
             <h3>تفاصيل الطلب: ${order.orderId}</h3>
             <p><strong>تاريخ الطلب:</strong> ${order.date}</p>
             <p><strong>اسم العميل:</strong> ${order.customer.name}</p>
             <p><strong>رقم الهاتف:</strong> ${order.customer.phone}</p>
-            <p><strong>العنوان:</strong> ${order.customer.address}, ${order.customer.city}</p>
-            <p><strong>طريقة الشحن:</strong> ${order.shippingMethod === 'standard' ? 'شحن عادي' : 'شحن سريع'}</p>
+            <p><strong>العنوان:</strong> ${order.customer.address}, ${
+      order.customer.city
+    }</p>
+            <p><strong>طريقة الشحن:</strong> ${
+              order.shippingMethod === "standard" ? "شحن عادي" : "شحن سريع"
+            }</p>
             <p><strong>إجمالي المبلغ:</strong> ${order.total}</p>
             <p><strong>المنتجات:</strong></p>
             <ul>${itemsHtml}</ul>
-            <p class="order-status ${getStatusClass(order.status)}"><strong>الحالة:</strong> ${order.status}</p>
+            <p class="order-status ${getStatusClass(
+              order.status
+            )}"><strong>الحالة:</strong> ${order.status}</p>
         `;
   } else {
     orderDetailsDiv.innerHTML = `<p style="color: #ff4757;">عذراً، لم يتم العثور على طلب بهذا الرقم. الرجاء التحقق من الرقم والمحاولة مرة أخرى.</p>`;
@@ -1262,16 +1796,21 @@ function findOrderDetails() {
  * @returns {string} - CSS class name.
  */
 function getStatusClass(status) {
-    switch(status) {
-        case "قيد المراجعة": return "pending";
-        case "قيد التجهيز": return "processing";
-        case "تم الشحن": return "shipped";
-        case "تم التسليم": return "delivered";
-        case "ملغى": return "cancelled";
-        default: return "";
-    }
+  switch (status) {
+    case "قيد المراجعة":
+      return "pending";
+    case "قيد التجهيز":
+      return "processing";
+    case "تم الشحن":
+      return "shipped";
+    case "تم التسليم":
+      return "delivered";
+    case "ملغى":
+      return "cancelled";
+    default:
+      return "";
+  }
 }
-
 
 // ---------------------------------------------------------------------------------
 // 6. FAVORITES PAGE
@@ -1280,55 +1819,55 @@ function getStatusClass(status) {
  * Loads and displays favorite products.
  */
 function loadFavoritesPage() {
-    currentPage = "favorites";
-    document.getElementById("homePage").classList.add("hidden");
-    document.getElementById("favoritesPage").classList.remove("hidden");
-    document.getElementById("orderTrackingModal").classList.add("hidden"); // Hide tracking if open
-    document.getElementById("productDetailModal").classList.add("hidden"); // Hide detail if open
-    document.getElementById("checkoutModal").classList.add("hidden"); // Hide checkout if open
+  currentPage = "favorites";
+  document.getElementById("homePage").classList.add("hidden");
+  document.getElementById("favoritesPage").classList.remove("hidden");
+  document.getElementById("orderTrackingModal").classList.add("hidden"); // Hide tracking if open
+  document.getElementById("productDetailModal").classList.add("hidden"); // Hide detail if open
+  document.getElementById("checkoutModal").classList.add("hidden"); // Hide checkout if open
 
+  const favoritesGrid = document.getElementById("favoritesGrid");
+  const noFavoritesMessage = document.getElementById("noFavoritesMessage");
 
-    const favoritesGrid = document.getElementById("favoritesGrid");
-    const noFavoritesMessage = document.getElementById("noFavoritesMessage");
+  favoritesGrid.innerHTML = ""; // Clear existing cards
 
-    favoritesGrid.innerHTML = ""; // Clear existing cards
+  if (favorites.length === 0) {
+    noFavoritesMessage.classList.remove("hidden");
+    return;
+  } else {
+    noFavoritesMessage.classList.add("hidden");
+  }
 
-    if (favorites.length === 0) {
-        noFavoritesMessage.classList.remove("hidden");
-        return;
-    } else {
-        noFavoritesMessage.classList.add("hidden");
-    }
+  const favoriteProducts = productsData.products.filter((product) =>
+    favorites.includes(product.id)
+  );
 
-    const favoriteProducts = productsData.products.filter(product => favorites.includes(product.id));
+  if (favoriteProducts.length === 0) {
+    noFavoritesMessage.classList.remove("hidden");
+    return;
+  }
 
-    if (favoriteProducts.length === 0) {
-        noFavoritesMessage.classList.remove("hidden");
-        return;
-    }
-
-    favoriteProducts.forEach((product, index) => {
-        setTimeout(() => {
-            const productCardHTML = createProductCardHTML(product);
-            const tempDiv = document.createElement("div");
-            tempDiv.innerHTML = productCardHTML;
-            tempDiv.firstElementChild.style.animation = "fadeIn 0.5s ease forwards";
-            favoritesGrid.appendChild(tempDiv.firstElementChild);
-        }, index * 100);
-    });
+  favoriteProducts.forEach((product, index) => {
+    setTimeout(() => {
+      const productCardHTML = createProductCardHTML(product);
+      const tempDiv = document.createElement("div");
+      tempDiv.innerHTML = productCardHTML;
+      tempDiv.firstElementChild.style.animation = "fadeIn 0.5s ease forwards";
+      favoritesGrid.appendChild(tempDiv.firstElementChild);
+    }, index * 100);
+  });
 }
 
 // Function to return to home page
 function loadHomePage() {
-    currentPage = "home";
-    document.getElementById("favoritesPage").classList.add("hidden");
-    document.getElementById("homePage").classList.remove("hidden");
-    document.getElementById("orderTrackingModal").classList.add("hidden"); // Hide tracking if open
-    document.getElementById("productDetailModal").classList.add("hidden"); // Hide detail if open
-    document.getElementById("checkoutModal").classList.add("hidden"); // Hide checkout if open
-    loadProducts(); // Reload products for home page
+  currentPage = "home";
+  document.getElementById("favoritesPage").classList.add("hidden");
+  document.getElementById("homePage").classList.remove("hidden");
+  document.getElementById("orderTrackingModal").classList.add("hidden"); // Hide tracking if open
+  document.getElementById("productDetailModal").classList.add("hidden"); // Hide detail if open
+  document.getElementById("checkoutModal").classList.add("hidden"); // Hide checkout if open
+  loadProducts(); // Reload products for home page
 }
-
 
 // ---------------------------------------------------------------------------------
 // 7. INITIALIZATION
