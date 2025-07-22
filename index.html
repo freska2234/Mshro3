@@ -22,11 +22,27 @@
           <i class="fas fa-shopping-cart"></i>
           <span class="cart-count" id="cartCount">0</span>
         </div>
-        <button class="btn btn-secondary" onclick="trackOrder()" style="margin-left: 15px;">
-            <i class="fas fa-search"></i> تتبع الطلب
+        <button
+          class="btn btn-secondary"
+          onclick="trackOrder()"
+          style="margin-left: 15px"
+        >
+          <i class="fas fa-search"></i> تتبع الطلب
         </button>
-        <button class="btn btn-secondary" onclick="loadFavoritesPage()" style="margin-left: 15px;">
+        <button
+          class="btn btn-secondary"
+          onclick="loadFavoritesPage()"
+          style="margin-left: 15px"
+        >
           <i class="fas fa-heart"></i> المفضلة
+          <span class="favorites-count" id="favoritesCount">0</span>
+        </button>
+        <button
+          class="btn btn-secondary"
+          onclick="loadRecentOrdersPage()"
+          style="margin-left: 15px"
+        >
+          <i class="fas fa-history"></i> طلباتي الأخيرة
         </button>
       </div>
     </header>
@@ -35,7 +51,12 @@
       <section class="products-section" id="homePage">
         <h2 class="section-title">منتجاتنا المميزة</h2>
         <div class="filter-controls">
-          <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="ابحث عن منتج..." />
+          <input
+            type="text"
+            id="searchInput"
+            onkeyup="filterProducts()"
+            placeholder="ابحث عن منتج..."
+          />
           <select id="categoryFilter" onchange="filterProducts()">
             <option value="all">كل الفئات</option>
             <option value="ملابس">ملابس</option>
@@ -50,17 +71,42 @@
             <option value="over500">أكثر من 500 جنيه</option>
           </select>
         </div>
-        <div class="products-grid" id="productsGrid">
-          </div>
+        <div class="products-grid" id="productsGrid"></div>
       </section>
 
       <section class="products-section hidden" id="favoritesPage">
         <h2 class="section-title">منتجاتك المفضلة</h2>
-        <div class="products-grid" id="favoritesGrid">
-          </div>
-        <p id="noFavoritesMessage" class="hidden" style="text-align: center; color: rgba(255,255,255,0.7); font-size: 18px; margin-top: 50px;">لا توجد منتجات في قائمة المفضلة بعد.</p>
+        <div class="products-grid" id="favoritesGrid"></div>
+        <p
+          id="noFavoritesMessage"
+          class="hidden"
+          style="
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 18px;
+            margin-top: 50px;
+          "
+        >
+          لا توجد منتجات في قائمة المفضلة بعد.
+        </p>
       </section>
 
+      <section class="products-section hidden" id="recentOrdersPage">
+        <h2 class="section-title">طلباتي الأخيرة</h2>
+        <div id="recentOrdersList" class="recent-orders-list"></div>
+        <p
+          id="noRecentOrdersMessage"
+          class="hidden"
+          style="
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 18px;
+            margin-top: 50px;
+          "
+        >
+          لم تقم بأي طلبات بعد.
+        </p>
+      </section>
 
       <div id="orderTrackingModal" class="modal hidden">
         <div class="modal-content">
@@ -72,14 +118,15 @@
             <label for="orderIdInput">أدخل رقم الطلب:</label>
             <input type="text" id="orderIdInput" placeholder="مثال: #12345" />
           </div>
-          <button class="btn btn-primary btn-large" onclick="findOrderDetails()">
+          <button
+            class="btn btn-primary btn-large"
+            onclick="findOrderDetails()"
+          >
             <i class="fas fa-truck"></i> بحث عن الطلب
           </button>
-          <div id="orderDetails" class="order-details-display">
-            </div>
+          <div id="orderDetails" class="order-details-display"></div>
         </div>
       </div>
-
     </main>
 
     <footer>
@@ -91,8 +138,7 @@
         <h3>سلة التسوق</h3>
         <button class="close-cart" onclick="toggleCart()">&times;</button>
       </div>
-      <div class="cart-items" id="cartItems">
-        </div>
+      <div class="cart-items" id="cartItems"></div>
       <div class="cart-summary">
         <div class="summary-item">
           <span>الإجمالي الفرعي:</span>
@@ -106,7 +152,12 @@
           <span>الإجمالي الكلي:</span>
           <span id="finalTotal">0 جنيه</span>
         </div>
-        <button class="btn btn-primary btn-large" id="checkoutBtn" onclick="showCheckoutForm()" disabled>
+        <button
+          class="btn btn-primary btn-large"
+          id="checkoutBtn"
+          onclick="showCheckoutForm()"
+          disabled
+        >
           <i class="fas fa-dollar-sign"></i> إتمام الشراء
         </button>
       </div>
@@ -117,8 +168,7 @@
         <button class="modal-close" onclick="hideModal('productDetailModal')">
           &times;
         </button>
-        <div class="product-detail" id="productDetailContent">
-          </div>
+        <div class="product-detail" id="productDetailContent"></div>
       </div>
     </div>
 
@@ -137,18 +187,48 @@
           </div>
           <div class="form-group">
             <label for="customerPhone">رقم الهاتف:</label>
-            <input type="tel" id="customerPhone" name="customerPhone" required pattern="[0-9]{10,}" title="الرجاء إدخال رقم هاتف صالح (10 أرقام على الأقل)." />
+            <input
+              type="tel"
+              id="customerPhone"
+              name="customerPhone"
+              required
+              pattern="[0-9]{10,}"
+              title="الرجاء إدخال رقم هاتف صالح (10 أرقام على الأقل)."
+            />
             <div class="error-message" id="customerPhoneError"></div>
           </div>
           <div class="form-group">
-            <label for="customerAddress">العنوان بالتفصيل:</label>
-            <textarea id="customerAddress" name="customerAddress" rows="3" required></textarea>
-            <div class="error-message" id="customerAddressError"></div>
+            <label for="customerGovernorate">المحافظة:</label>
+            <select
+              id="customerGovernorate"
+              name="customerGovernorate"
+              required
+            >
+              <option value="">اختر المحافظة</option>
+            </select>
+            <div class="error-message" id="customerGovernorateError"></div>
           </div>
           <div class="form-group">
-            <label for="customerCity">المدينة:</label>
-            <input type="text" id="customerCity" name="customerCity" required />
-            <div class="error-message" id="customerCityError"></div>
+            <label for="customerCitySelect">المدينة:</label>
+            <select
+              id="customerCitySelect"
+              name="customerCity"
+              required
+              disabled
+            >
+              <option value="">اختر المدينة</option>
+            </select>
+            <div class="error-message" id="customerCitySelectError"></div>
+          </div>
+          <div class="form-group">
+            <label for="customerAddress">العنوان بالتفصيل:</label>
+            <textarea
+              id="customerAddress"
+              name="customerAddress"
+              rows="3"
+              required
+            ></textarea>
+            <div class="error-message" id="customerAddressError"></div>
           </div>
           <div class="form-group">
             <label for="shippingMethod">طريقة الشحن:</label>
@@ -159,8 +239,7 @@
           </div>
 
           <h3>ملخص الطلب</h3>
-          <div id="checkoutSummary">
-            </div>
+          <div id="checkoutSummary"></div>
           <div class="checkout-total">
             <span>الإجمالي:</span>
             <span id="checkoutFinalTotal">0 جنيه</span>
