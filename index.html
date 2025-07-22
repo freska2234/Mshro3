@@ -16,69 +16,164 @@
   </head>
   <body>
     <header>
-      <div class="logo"><i class="fas fa-store"></i> Nubalya Store </div>
+      <div class="logo"><i class="fas fa-store"></i> Nubalya Store</div>
       <div class="header-actions">
         <div class="cart-icon" onclick="toggleCart()">
-            
-            <div class="header-actions">
-  <button class="btn btn-secondary" onclick="trackOrder()" style="margin-left: 15px;">
-    <i class="fas fa-search"></i> تتبع الطلب
-  </button>
-  <!-- <div class="cart-icon" onclick="toggleCart()">
-    <i class="fas fa-shopping-cart"></i>
-    <span class="cart-count" id="cartCount">0</span>
-  </div> -->
-</div>
           <i class="fas fa-shopping-cart"></i>
           <span class="cart-count" id="cartCount">0</span>
         </div>
+        <button class="btn btn-secondary" onclick="trackOrder()" style="margin-left: 15px;">
+            <i class="fas fa-search"></i> تتبع الطلب
+        </button>
+        <button class="btn btn-secondary" onclick="loadFavoritesPage()" style="margin-left: 15px;">
+          <i class="fas fa-heart"></i> المفضلة
+        </button>
       </div>
     </header>
 
     <main class="main-content">
-      <div id="homePage" class="products-section">
-        <h1 class="section-title">منتجاتنا المميزة</h1>
+      <section class="products-section" id="homePage">
+        <h2 class="section-title">منتجاتنا المميزة</h2>
+        <div class="filter-controls">
+          <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="ابحث عن منتج..." />
+          <select id="categoryFilter" onchange="filterProducts()">
+            <option value="all">كل الفئات</option>
+            <option value="ملابس">ملابس</option>
+            <option value="أحذية">أحذية</option>
+            <option value="إلكترونيات">إلكترونيات</option>
+            <option value="إكسسوارات">إكسسوارات</option>
+          </select>
+          <select id="priceFilter" onchange="filterProducts()">
+            <option value="all">كل الأسعار</option>
+            <option value="under200">أقل من 200 جنيه</option>
+            <option value="200-500">200 - 500 جنيه</option>
+            <option value="over500">أكثر من 500 جنيه</option>
+          </select>
+        </div>
         <div class="products-grid" id="productsGrid">
           </div>
+      </section>
+
+      <section class="products-section hidden" id="favoritesPage">
+        <h2 class="section-title">منتجاتك المفضلة</h2>
+        <div class="products-grid" id="favoritesGrid">
+          </div>
+        <p id="noFavoritesMessage" class="hidden" style="text-align: center; color: rgba(255,255,255,0.7); font-size: 18px; margin-top: 50px;">لا توجد منتجات في قائمة المفضلة بعد.</p>
+      </section>
+
+
+      <div id="orderTrackingModal" class="modal hidden">
+        <div class="modal-content">
+          <button class="modal-close" onclick="hideModal('orderTrackingModal')">
+            &times;
+          </button>
+          <h2>تتبع طلبك</h2>
+          <div class="form-group">
+            <label for="orderIdInput">أدخل رقم الطلب:</label>
+            <input type="text" id="orderIdInput" placeholder="مثال: #12345" />
+          </div>
+          <button class="btn btn-primary btn-large" onclick="findOrderDetails()">
+            <i class="fas fa-truck"></i> بحث عن الطلب
+          </button>
+          <div id="orderDetails" class="order-details-display">
+            </div>
+        </div>
       </div>
 
-      <div id="checkoutPage" class="hidden">
-        </div>
     </main>
 
-    <div id="productModal" class="modal hidden">
-      <div class="modal-content">
-        <button class="modal-close" onclick="closeModal()">&times;</button>
-        <div id="productDetailContent">
-          </div>
-      </div>
-    </div>
+    <footer>
+      <p>&copy; 2024 متجر نوباليا. جميع الحقوق محفوظة.</p>
+    </footer>
 
-    <div id="cartSidebar" class="cart-sidebar">
+    <div class="cart-sidebar" id="cartSidebar">
       <div class="cart-header">
-        <h2 class="cart-title">
-          <i class="fas fa-shopping-cart"></i> سلة التسوق
-        </h2>
-        <button class="cart-close" onclick="toggleCart()">&times;</button>
+        <h3>سلة التسوق</h3>
+        <button class="close-cart" onclick="toggleCart()">&times;</button>
       </div>
       <div class="cart-items" id="cartItems">
         </div>
       <div class="cart-summary">
-        <div class="cart-total">
-          <span>الإجمالي:</span>
-          <span class="total-price" id="cartTotal">0 جنيه</span>
+        <div class="summary-item">
+          <span>الإجمالي الفرعي:</span>
+          <span id="cartTotal">0 جنيه</span>
         </div>
-        <button
-          class="btn btn-primary btn-large"
-          onclick="proceedToCheckout()"
-          id="checkoutBtn"
-          disabled
-        >
-          <i class="fas fa-credit-card"></i>
-          إتمام الطلب
+        <div class="summary-item">
+          <span>الشحن:</span>
+          <span id="shippingCost">سيتم حسابه</span>
+        </div>
+        <div class="summary-item total-final">
+          <span>الإجمالي الكلي:</span>
+          <span id="finalTotal">0 جنيه</span>
+        </div>
+        <button class="btn btn-primary btn-large" id="checkoutBtn" onclick="showCheckoutForm()" disabled>
+          <i class="fas fa-dollar-sign"></i> إتمام الشراء
         </button>
       </div>
     </div>
+
+    <div id="productDetailModal" class="modal hidden">
+      <div class="modal-content product-detail-modal-content">
+        <button class="modal-close" onclick="hideModal('productDetailModal')">
+          &times;
+        </button>
+        <div class="product-detail" id="productDetailContent">
+          </div>
+      </div>
+    </div>
+
+    <div id="checkoutModal" class="modal hidden">
+      <div class="modal-content">
+        <button class="modal-close" onclick="hideModal('checkoutModal')">
+          &times;
+        </button>
+        <h2>إتمام الشراء</h2>
+        <form id="checkoutForm">
+          <h3>معلومات الشحن</h3>
+          <div class="form-group">
+            <label for="customerName">الاسم كاملاً:</label>
+            <input type="text" id="customerName" name="customerName" required />
+            <div class="error-message" id="customerNameError"></div>
+          </div>
+          <div class="form-group">
+            <label for="customerPhone">رقم الهاتف:</label>
+            <input type="tel" id="customerPhone" name="customerPhone" required pattern="[0-9]{10,}" title="الرجاء إدخال رقم هاتف صالح (10 أرقام على الأقل)." />
+            <div class="error-message" id="customerPhoneError"></div>
+          </div>
+          <div class="form-group">
+            <label for="customerAddress">العنوان بالتفصيل:</label>
+            <textarea id="customerAddress" name="customerAddress" rows="3" required></textarea>
+            <div class="error-message" id="customerAddressError"></div>
+          </div>
+          <div class="form-group">
+            <label for="customerCity">المدينة:</label>
+            <input type="text" id="customerCity" name="customerCity" required />
+            <div class="error-message" id="customerCityError"></div>
+          </div>
+          <div class="form-group">
+            <label for="shippingMethod">طريقة الشحن:</label>
+            <select id="shippingMethod" name="shippingMethod">
+              <option value="standard">شحن عادي (2-5 أيام عمل)</option>
+              <option value="express">شحن سريع (1-2 يوم عمل)</option>
+            </select>
+          </div>
+
+          <h3>ملخص الطلب</h3>
+          <div id="checkoutSummary">
+            </div>
+          <div class="checkout-total">
+            <span>الإجمالي:</span>
+            <span id="checkoutFinalTotal">0 جنيه</span>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-large">
+            <i class="fas fa-check-circle"></i> تأكيد الطلب
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div id="toastContainer" class="toast-container"></div>
 
     <script src="script.js"></script>
   </body>

@@ -32,14 +32,17 @@ const productsData = {
       ],
       sizes: ["S", "M", "L", "XL", "XXL"],
       details:
-        "قميص قطني 100% عالي الجودة، مصنوع من أجود أنواع القطن المصري. يتميز بالنعومة والراحة والمتانة.",
+        "قميص قطني 100% عالي الجودة، مصنوع من أجود أنواع القطن المصري. يتميز بالنعومة والراحة والمتانة. مثالي للارتداء اليومي وفي المناسبات الكاجوال. تصميم عصري يناسب جميع الأذواق.",
       specifications: [
         "الخامة: قطن 100%",
         "المنشأ: مصر",
         "العناية: غسيل آلة عادي",
+        "المقاسات المتاحة: S, M, L, XL, XXL",
+        "الألوان المتاحة: أزرق، أسود، أبيض"
       ],
       warranty: "ضمان الجودة لمدة 30 يوم",
       returnPolicy: "إمكانية الاسترداد خلال 14 يوم من الاستلام",
+      category: "ملابس"
     },
     {
       id: 2,
@@ -65,14 +68,17 @@ const productsData = {
       ],
       sizes: ["39", "40", "41", "42", "43", "44", "45"],
       details:
-        "حذاء رياضي متطور مصمم للرياضيين المحترفين. يوفر راحة استثنائية ودعم ممتاز للقدم.",
+        "حذاء رياضي متطور مصمم للرياضيين المحترفين. يوفر راحة استثنائية ودعم ممتاز للقدم. تقنية توسيد متقدمة لامتصاص الصدمات وتحسين الأداء.",
       specifications: [
         "الخامة العلوية: شبك تقني متنفس",
         "النعل: مطاط عالي الجودة",
         "التبطين: فوم الذاكرة للراحة",
+        "الاستخدام: جري، تدريب، رياضة يومية",
+        "الألوان المتاحة: أسود، أبيض، أحمر"
       ],
       warranty: "ضمان الجودة لمدة 6 أشهر",
       returnPolicy: "إمكانية الاسترداد خلال 30 يوم من الاستلام",
+      category: "أحذية"
     },
     {
       id: 3,
@@ -98,14 +104,17 @@ const productsData = {
       ],
       sizes: ["38mm", "42mm"],
       details:
-        "ساعة ذكية متطورة تجمع بين الأناقة والتكنولوجيا. تتضمن مراقب معدل ضربات القلب، GPS، ومقاومة للماء.",
+        "ساعة ذكية متطورة تجمع بين الأناقة والتكنولوجيا. تتضمن مراقب معدل ضربات القلب، GPS، ومقاومة للماء حتى 50 متر. مثالية لتتبع نشاطك اليومي وصحتك.",
       specifications: [
         "الشاشة: AMOLED 1.4 بوصة",
         "البطارية: تدوم حتى 7 أيام",
         "الاتصال: Bluetooth 5.0, WiFi, NFC",
+        "مقاومة الماء: حتى 50 متر",
+        "الميزات: مراقب نبضات القلب، تتبع النوم، GPS"
       ],
       warranty: "ضمان دولي لمدة سنتين",
       returnPolicy: "إمكانية الاسترداد خلال 15 يوم من الاستلام",
+      category: "إلكترونيات"
     },
     {
       id: 4,
@@ -130,14 +139,17 @@ const productsData = {
       ],
       sizes: ["متوسط", "كبير"],
       details:
-        "حقيبة جلدية فاخرة مصنوعة من الجلد الطبيعي. تصميم أنيق وعملي مع مقصورات متعددة.",
+        "حقيبة جلدية فاخرة مصنوعة من الجلد الطبيعي. تصميم أنيق وعملي مع مقصورات متعددة. مثالية للاستخدام اليومي أو للسفر القصير، وتتسع للابتوب والأوراق الأساسية.",
       specifications: [
         "الخامة: جلد طبيعي 100%",
         "الأبعاد: 40×30×15 سم",
         "الإقفال: سحاب معدني",
+        "الجيوب: جيب أمامي، جيب داخلي بسحاب",
+        "الألوان المتاحة: بني، أسود"
       ],
       warranty: "ضمان الصناعة لمدة سنة واحدة",
       returnPolicy: "إمكانية الاسترداد خلال 21 يوم من الاستلام",
+      category: "إكسسوارات"
     },
     {
       id: 5,
@@ -163,14 +175,17 @@ const productsData = {
       ],
       sizes: ["مقاس واحد"],
       details:
-        "سماعات لاسلكية متطورة مع تقنية إلغاء الضوضاء النشط وجودة صوت استثنائية.",
+        "سماعات لاسلكية متطورة مع تقنية إلغاء الضوضاء النشط وجودة صوت استثنائية. توفر تجربة استماع غامرة ومريحة لساعات طويلة.",
       specifications: [
         "التقنية: Bluetooth 5.2",
         "البطارية: 30 ساعة تشغيل",
         "المقاومة: IPX4 ضد الماء",
+        "خاصية إلغاء الضوضاء: نعم",
+        "الألوان المتاحة: أسود، أبيض، أزرق"
       ],
       warranty: "ضمان دولي لمدة سنة واحدة",
       returnPolicy: "إمكانية الاسترداد خلال 14 يوم من الاستلام",
+      category: "إلكترونيات"
     },
     {
       id: 6,
@@ -195,22 +210,27 @@ const productsData = {
       ],
       sizes: ["مقاس واحد"],
       details:
-        "نظارة شمسية عصرية بتصميم أنيق وحماية فائقة من الأشعة فوق البنفسجية.",
+        "نظارة شمسية عصرية بتصميم أنيق وحماية فائقة من الأشعة فوق البنفسجية. عدسات بولاريزد لتقليل الوهج وتوفير رؤية واضحة ومريحة.",
       specifications: [
         "الحماية: UV400",
         "الإطار: معدن خفيف الوزن",
         "العدسات: بولاريزد",
+        "شكل الإطار: دائري / مربع (متاح تصميمات متعددة)",
+        "الألوان المتاحة: أسود، ذهبي"
       ],
       warranty: "ضمان الصناعة لمدة 6 أشهر",
       returnPolicy: "إمكانية الاسترداد خلال 10 أيام من الاستلام",
+      category: "إكسسوارات"
     },
   ],
 };
+
 // إعدادات بوت التليجرام
 const TELEGRAM_CONFIG = {
-  BOT_TOKEN: '7254345779:AAF2IY-f42Vj4Zgai5dlCK7yxpWhz4_S7Ac',
-  CHAT_ID: '5895491379' // هتحط الـ chat ID بتاعك هنا
+  BOT_TOKEN: '7254345779:AAF2IY-f42Vj4Zgai5dlCK7yxpWhz4_S7Ac', // استبدل بـ BOT TOKEN الخاص بك
+  CHAT_ID: '5895491379' // استبدل بـ CHAT ID الخاص بك
 };
+
 // ---------------------------------------------------------------------------------
 // 2. STATE MANAGEMENT
 // ---------------------------------------------------------------------------------
@@ -218,7 +238,7 @@ const TELEGRAM_CONFIG = {
 let cart = [];
 let favorites = [];
 let currentProduct = null;
-let currentPage = "home";
+let currentPage = "home"; // "home", "favorites"
 
 const StorageManager = {
   saveCart: (cartData) => {
@@ -256,8 +276,8 @@ const StorageManager = {
   saveOrderHistory: (order) => {
     try {
       let history = JSON.parse(localStorage.getItem("ecom_orderHistory")) || [];
-      history.unshift(order);
-      if (history.length > 10) history = history.slice(0, 10);
+      history.unshift(order); // Add new order to the beginning
+      if (history.length > 10) history = history.slice(0, 10); // Keep only last 10 orders
       localStorage.setItem("ecom_orderHistory", JSON.stringify(history));
     } catch (e) {
       console.error("Failed to save order history:", e);
@@ -275,6 +295,31 @@ const StorageManager = {
 // ---------------------------------------------------------------------------------
 // 3. UI RENDERING & UPDATES
 // ---------------------------------------------------------------------------------
+
+/**
+ * Generates star icons for a given rating.
+ * @param {number} rating - The product rating (e.g., 4.5).
+ * @param {string} sizeClass - Optional class for sizing stars (e.g., 'mini').
+ * @returns {string} - HTML string for star icons.
+ */
+function generateStars(rating, sizeClass = "") {
+  let starsHtml = `<div class="stars ${sizeClass}">`;
+  const fullStars = Math.floor(rating);
+  const halfStar = rating % 1 >= 0.5;
+  const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+  for (let i = 0; i < fullStars; i++) {
+    starsHtml += '<i class="fas fa-star"></i>';
+  }
+  if (halfStar) {
+    starsHtml += '<i class="fas fa-star-half-alt"></i>';
+  }
+  for (let i = 0; i < emptyStars; i++) {
+    starsHtml += '<i class="far fa-star"></i>';
+  }
+  starsHtml += "</div>";
+  return starsHtml;
+}
 
 /**
  * Creates HTML for a single product card.
@@ -295,10 +340,9 @@ function createProductCardHTML(product) {
         <div class="product-overlay">
             <button class="overlay-btn favorite-btn ${
               isFavorite ? "active" : ""
-            }" onclick="toggleFavorite(event, ${product.id})" 
-                    title="${
-                      isFavorite ? "إزالة من المفضلة" : "إضافة للمفضلة"
-                    }">
+            }" onclick="toggleFavorite(event, ${product.id})" title="${
+    isFavorite ? "إزالة من المفضلة" : "إضافة للمفضلة"
+  }">
                 <i class="${favoriteIcon}"></i>
             </button>
             <button class="overlay-btn" onclick="showProductDetail(${
@@ -341,7 +385,7 @@ function createProductCardHTML(product) {
             </div>
         </div>
     </div>
-  `;
+    `;
 }
 
 /**
@@ -351,16 +395,49 @@ function loadProducts() {
   const productsGrid = document.getElementById("productsGrid");
   if (!productsGrid) return;
   productsGrid.innerHTML = "";
-  productsData.products.forEach((product, index) => {
+  let filtered = productsData.products;
+
+  // Apply filters if any (initially all)
+  const searchTerm = document.getElementById("searchInput")?.value.toLowerCase() || "";
+  const category = document.getElementById("categoryFilter")?.value || "all";
+  const priceRange = document.getElementById("priceFilter")?.value || "all";
+
+  filtered = productsData.products.filter(product => {
+    const matchesSearch = product.name.toLowerCase().includes(searchTerm) ||
+                          product.description.toLowerCase().includes(searchTerm);
+    const matchesCategory = category === "all" || product.category === category;
+    let matchesPrice = true;
+    if (priceRange === "under200") {
+      matchesPrice = product.currentPrice < 200;
+    } else if (priceRange === "200-500") {
+      matchesPrice = product.currentPrice >= 200 && product.currentPrice <= 500;
+    } else if (priceRange === "over500") {
+      matchesPrice = product.currentPrice > 500;
+    }
+    return matchesSearch && matchesCategory && matchesPrice;
+  });
+
+  if (filtered.length === 0) {
+    productsGrid.innerHTML = `<p style="text-align: center; width: 100%; color: rgba(255,255,255,0.7); font-size: 18px; margin-top: 50px;">لا توجد منتجات مطابقة لمعايير البحث.</p>`;
+    return;
+  }
+
+
+  filtered.forEach((product, index) => {
     setTimeout(() => {
       const productCardHTML = createProductCardHTML(product);
       const tempDiv = document.createElement("div");
       tempDiv.innerHTML = productCardHTML;
       tempDiv.firstElementChild.style.animation = "fadeIn 0.5s ease forwards";
       productsGrid.appendChild(tempDiv.firstElementChild);
-    }, index * 100);
+    }, index * 100); // Staggered animation
   });
 }
+
+function filterProducts() {
+    loadProducts(); // Simply re-load products with current filter values
+}
+
 
 /**
  * Updates the cart count bubble in the header.
@@ -382,760 +459,889 @@ function updateCartCount() {
 function updateCartUI() {
   const cartItemsEl = document.getElementById("cartItems");
   const cartTotalEl = document.getElementById("cartTotal");
+  const shippingCostEl = document.getElementById("shippingCost");
+  const finalTotalEl = document.getElementById("finalTotal");
   const checkoutBtn = document.getElementById("checkoutBtn");
 
   if (cart.length === 0) {
     cartItemsEl.innerHTML = `
-      <div style="text-align: center; padding: 40px; color: rgba(255, 255, 255, 0.6);">
-          <i class="fas fa-shopping-cart" style="font-size: 48px; margin-bottom: 20px; opacity: 0.5;"></i>
-          <p>سلة التسوق فارغة.</p>
-          <button class="btn btn-primary" onclick="toggleCart()" style="margin-top: 15px;">
-              ابدأ التسوق الآن
-          </button>
-      </div>`;
+            <div style="text-align: center; padding: 40px; color: rgba(255, 255, 255, 0.6);">
+                <i class="fas fa-shopping-cart" style="font-size: 48px; margin-bottom: 20px; opacity: 0.5;"></i>
+                <p>سلة التسوق فارغة.</p>
+                <button class="btn btn-primary" onclick="toggleCart()" style="margin-top: 15px;">
+                    ابدأ التسوق الآن
+                </button>
+            </div>`;
     cartTotalEl.textContent = "0 جنيه";
+    shippingCostEl.textContent = "سيتم حسابه";
+    finalTotalEl.textContent = "0 جنيه";
     checkoutBtn.disabled = true;
     checkoutBtn.style.opacity = "0.5";
     return;
   }
 
-  let total = 0;
+  let subtotal = 0;
   cartItemsEl.innerHTML = "";
-  cart.forEach((item, index) => {
-    total += item.price * item.quantity;
-    const itemHTML = `
-      <div class="cart-item">
-          <img src="${item.image}" alt="${item.name}" class="cart-item-image">
-          <div class="cart-item-details">
-              <div class="cart-item-title">${item.name}</div>
-              <div class="cart-item-options">
-                  ${item.color ? `اللون: ${item.color}` : ""}
-                  ${item.color && item.size ? " &bull; " : ""}
-                  ${item.size ? `المقاس: ${item.size}` : ""}
-              </div>
-              <div class="cart-item-price">${
-                item.price * item.quantity
-              } جنيه</div>
-              <div class="cart-item-controls">
-                  <button class="btn btn-secondary" onclick="updateCartItemQuantity(${index}, -1)">-</button>
-                  <span style="padding: 0 10px;">${item.quantity}</span>
-                  <button class="btn btn-secondary" onclick="updateCartItemQuantity(${index}, 1)">+</button>
-                  <button class="btn btn-secondary" onclick="removeFromCart(${index})" title="إزالة" style="background: #ff4757; margin-right: auto;">
-                      <i class="fas fa-trash"></i>
-                  </button>
-              </div>
-          </div>
-      </div>`;
-    cartItemsEl.innerHTML += itemHTML;
+  cart.forEach((item) => {
+    subtotal += item.price * item.quantity;
+    const cartItemHTML = `
+            <div class="cart-item">
+                <button class="remove-item" onclick="removeItemFromCart(${item.id}, '${item.selectedColor}', '${item.selectedSize}')">
+                    <i class="fas fa-times-circle"></i>
+                </button>
+                <img src="${item.image}" alt="${item.name}">
+                <div class="cart-item-info">
+                    <h4>${item.name}</h4>
+                    <p>اللون: ${item.selectedColor || "غير محدد"}</p>
+                    <p>المقاس: ${item.selectedSize || "غير محدد"}</p>
+                    <div class="quantity-control">
+                        <button onclick="changeQuantity(${item.id}, '${item.selectedColor}', '${item.selectedSize}', -1)">-</button>
+                        <span>${item.quantity}</span>
+                        <button onclick="changeQuantity(${item.id}, '${item.selectedColor}', '${item.selectedSize}', 1)">+</button>
+                    </div>
+                </div>
+                <span class="cart-item-price">${item.price * item.quantity} جنيه</span>
+            </div>
+        `;
+    cartItemsEl.innerHTML += cartItemHTML;
   });
 
-  cartTotalEl.textContent = `${total} جنيه`;
+  cartTotalEl.textContent = `${subtotal} جنيه`;
+
+  // Calculate and display shipping and final total
+  const shipping = calculateShipping();
+  shippingCostEl.textContent = `${shipping} جنيه`;
+  finalTotalEl.textContent = `${subtotal + shipping} جنيه`;
+
   checkoutBtn.disabled = false;
   checkoutBtn.style.opacity = "1";
 }
 
 /**
- * Displays a notification message.
- * @param {string} message - The message to display.
- * @param {string} [type='info'] - The type of notification ('success', 'error', 'info').
+ * Displays the product detail modal with information for a specific product.
+ * @param {number} productId - The ID of the product to display.
  */
-function showNotification(message, type = "info") {
-  const notification = document.createElement("div");
-  const icons = {
-    success: "fa-check-circle",
-    error: "fa-exclamation-circle",
-    info: "fa-info-circle",
-  };
-  const colors = {
-    success: "#00ff88",
-    error: "#ff4757",
-    info: "#00ddff",
-  };
-  notification.style.cssText = `
-      position: fixed; top: 20px; right: 20px; padding: 15px 20px;
-      background: ${colors[type]}; color: ${
-    type === "success" ? "#000" : "#fff"
-  };
-      border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      z-index: 9999; font-weight: 600; transform: translateX(120%);
-      transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-  `;
-  notification.innerHTML = `<i class="fas ${icons[type]}"></i> ${message}`;
-  document.body.appendChild(notification);
-  setTimeout(() => (notification.style.transform = "translateX(0)"), 100);
-  setTimeout(() => {
-    notification.style.transform = "translateX(120%)";
-    setTimeout(() => document.body.removeChild(notification), 500);
-  }, 3000);
+function showProductDetail(productId) {
+  currentProduct = productsData.products.find((p) => p.id === productId);
+  if (!currentProduct) {
+    showToast("خطأ: المنتج غير موجود.", "error");
+    return;
+  }
+
+  const modal = document.getElementById("productDetailModal");
+  const content = document.getElementById("productDetailContent");
+
+  let colorsHtml = "";
+  if (currentProduct.colors && currentProduct.colors.length > 0) {
+    colorsHtml = `
+            <div class="option-group">
+                <label class="option-label">الألوان المتاحة:</label>
+                <div class="color-options">
+                    ${currentProduct.colors
+                      .map(
+                        (color) => `
+                        <div class="color-box" style="background-color: ${
+                          color.code === '#ffffff' ? '#eee; border: 1px solid #ccc;' : color.code
+                        };"
+                            title="${color.name}"
+                            data-color="${color.name}"
+                            onclick="selectOption('color', '${color.name}')"></div>
+                    `
+                      )
+                      .join("")}
+                </div>
+            </div>
+        `;
+  }
+
+  let sizesHtml = "";
+  if (currentProduct.sizes && currentProduct.sizes.length > 0) {
+    sizesHtml = `
+            <div class="option-group">
+                <label class="option-label">المقاسات المتاحة:</label>
+                <div class="size-options">
+                    ${currentProduct.sizes
+                      .map(
+                        (size) => `
+                        <button class="size-btn" data-size="${size}" onclick="selectOption('size', '${size}')">${size}</button>
+                    `
+                      )
+                      .join("")}
+                </div>
+            </div>
+        `;
+  }
+
+  const isFavorite = favorites.includes(currentProduct.id);
+  const favoriteButtonClass = isFavorite ? "active" : "";
+  const favoriteButtonText = isFavorite ? "إزالة من المفضلة" : "إضافة للمفضلة";
+  const favoriteButtonIcon = isFavorite ? "fas fa-heart" : "far fa-heart";
+
+  content.innerHTML = `
+        <div class="product-gallery">
+            <img src="${currentProduct.mainImage}" alt="${
+    currentProduct.name
+  }" class="main-image" id="detailMainImage">
+            <div class="image-thumbnails">
+                ${currentProduct.images
+                  .map(
+                    (img, index) => `
+                    <img src="${img}" alt="Thumbnail ${
+                      index + 1
+                    }" class="thumbnail ${
+                      index === 0 ? "active" : ""
+                    }" onclick="changeMainImage('${img}', this)">
+                `
+                  )
+                  .join("")}
+            </div>
+        </div>
+        <div class="product-details">
+            <h1>${currentProduct.name}</h1>
+            <div class="product-rating">
+                ${generateStars(currentProduct.rating)}
+                <span class="rating-text">(${
+                  currentProduct.reviews
+                } مراجعة)</span>
+            </div>
+            <p class="product-description">${currentProduct.description}</p>
+            <div class="price-section">
+                <span class="current-price">${
+                  currentProduct.currentPrice
+                } جنيه</span>
+                ${
+                  currentProduct.originalPrice > currentProduct.currentPrice
+                    ? `<span class="original-price">${currentProduct.originalPrice} جنيه</span>`
+                    : ""
+                }
+                ${
+                  currentProduct.discount > 0
+                    ? `<span class="discount-badge">${currentProduct.discount}% خصم</span>`
+                    : ""
+                }
+            </div>
+
+            ${colorsHtml}
+            ${sizesHtml}
+
+            <div class="quantity-control">
+                <button onclick="changeDetailQuantity(-1)">-</button>
+                <span id="detailQuantity">1</span>
+                <button onclick="changeDetailQuantity(1)">+</button>
+            </div>
+
+            <div class="product-actions-detail">
+                <button class="btn btn-primary btn-large" onclick="addToCartFromDetail()">
+                    <i class="fas fa-cart-plus"></i> إضافة للسلة
+                </button>
+                <button class="btn btn-secondary btn-large favorite-btn ${favoriteButtonClass}" onclick="toggleFavorite(event, ${currentProduct.id}, true)">
+                    <i class="${favoriteButtonIcon}"></i> ${favoriteButtonText}
+                </button>
+            </div>
+
+            <div class="product-tabs">
+                <div class="tab-buttons">
+                    <button class="tab-button active" data-tab="details" onclick="openTab(event, 'details')">الوصف التفصيلي</button>
+                    <button class="tab-button" data-tab="specs" onclick="openTab(event, 'specs')">المواصفات</button>
+                    <button class="tab-button" data-tab="warranty" onclick="openTab(event, 'warranty')">الضمان والاسترجاع</button>
+                </div>
+                <div id="details" class="tab-content">
+                    <p>${currentProduct.details}</p>
+                </div>
+                <div id="specs" class="tab-content hidden">
+                    <ul>
+                        ${currentProduct.specifications.map(spec => `<li><i class="fas fa-check-circle"></i> ${spec}</li>`).join('')}
+                    </ul>
+                </div>
+                <div id="warranty" class="tab-content hidden">
+                    <p><strong>الضمان:</strong> ${currentProduct.warranty}</p>
+                    <p><strong>سياسة الاسترجاع:</strong> ${currentProduct.returnPolicy}</p>
+                </div>
+            </div>
+        </div>
+    `;
+
+  // Reset selected options and quantity when opening modal
+  modal.dataset.selectedColor = "";
+  modal.dataset.selectedSize = "";
+  document.getElementById("detailQuantity").textContent = "1";
+
+  // Pre-select first color/size if available
+  if (currentProduct.colors && currentProduct.colors.length > 0) {
+    selectOption('color', currentProduct.colors[0].name);
+  }
+  if (currentProduct.sizes && currentProduct.sizes.length > 0) {
+    selectOption('size', currentProduct.sizes[0]);
+  }
+
+  modal.classList.remove("hidden");
 }
-// إرسال الطلب للتليجرام
-async function sendToTelegram(orderData) {
-  const message = `
-🛍️ *طلب جديد - #${orderData.orderNumber}*
 
-👤 *العميل:* ${orderData.fullName}
-📱 *الهاتف:* ${orderData.phone}
-🏠 *المحافظة:* ${orderData.governorate}
-📍 *العنوان:* ${orderData.address}
 
-📦 *المنتجات:*
-${orderData.orderItems.map(item => 
-  `• ${item.name} - ${item.quantity} قطعة - ${item.price * item.quantity} ج`
-).join('\n')}
+/**
+ * Changes the main image in the product detail modal.
+ * @param {string} imageSrc - The URL of the new image.
+ * @param {HTMLElement} clickedThumbnail - The thumbnail element that was clicked.
+ */
+function changeMainImage(imageSrc, clickedThumbnail) {
+  document.getElementById("detailMainImage").src = imageSrc;
+  document.querySelectorAll(".thumbnail").forEach((thumb) => {
+    thumb.classList.remove("active");
+  });
+  clickedThumbnail.classList.add("active");
+}
 
-💰 *الإجمالي:* ${orderData.total} جنيه
-🚚 *الشحن:* ${orderData.deliveryFee === 0 ? 'مجاناً' : orderData.deliveryFee + ' ج'}
-💵 *المبلغ النهائي:* ${orderData.finalTotal} جنيه
+/**
+ * Handles tab switching in product detail modal.
+ * @param {Event} event - The click event.
+ * @param {string} tabName - The name of the tab to open.
+ */
+function openTab(event, tabName) {
+  const tabContents = document.querySelectorAll(".tab-content");
+  tabContents.forEach((content) => content.classList.add("hidden"));
 
-📅 *تاريخ الطلب:* ${new Date(orderData.orderDate).toLocaleString('ar-EG')}
-`;
+  const tabButtons = document.querySelectorAll(".tab-button");
+  tabButtons.forEach((button) => button.classList.remove("active"));
 
-  try {
-    const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_CONFIG.BOT_TOKEN}/sendMessage`, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        chat_id: TELEGRAM_CONFIG.CHAT_ID,
-        text: message,
-        parse_mode: 'Markdown'
-      })
+  document.getElementById(tabName).classList.remove("hidden");
+  event.currentTarget.classList.add("active");
+}
+
+/**
+ * Selects an option (color or size) in the product detail modal.
+ * @param {string} type - 'color' or 'size'.
+ * @param {string} value - The selected color name or size value.
+ */
+function selectOption(type, value) {
+  const modal = document.getElementById("productDetailModal");
+  if (type === "color") {
+    modal.dataset.selectedColor = value;
+    document.querySelectorAll(".color-box").forEach((box) => {
+      box.classList.remove("selected");
+      if (box.dataset.color === value) {
+        box.classList.add("selected");
+      }
     });
-    return response.ok;
-  } catch (error) {
-    console.error('خطأ في إرسال الرسالة:', error);
-    return false;
+  } else if (type === "size") {
+    modal.dataset.selectedSize = value;
+    document.querySelectorAll(".size-btn").forEach((btn) => {
+      btn.classList.remove("selected");
+      if (btn.dataset.size === value) {
+        btn.classList.add("selected");
+      }
+    });
   }
 }
-/**
- * Generates star rating HTML.
- */
-function generateStars(rating, size = "normal") {
-  let stars = "";
-  const fullStars = Math.floor(rating);
-  const hasHalfStar = rating % 1 !== 0;
-  const sizeClass = size === "mini" ? "rating-mini" : "";
 
-  for (let i = 0; i < fullStars; i++) {
-    stars += `<i class="fas fa-star ${sizeClass}"></i>`;
+/**
+ * Changes the quantity in the product detail modal.
+ * @param {number} delta - The amount to change the quantity by (-1 or 1).
+ */
+function changeDetailQuantity(delta) {
+  const quantityEl = document.getElementById("detailQuantity");
+  let quantity = parseInt(quantityEl.textContent);
+  quantity = Math.max(1, quantity + delta); // Quantity cannot be less than 1
+  quantityEl.textContent = quantity;
+}
+
+
+/**
+ * Hides a given modal.
+ * @param {string} modalId - The ID of the modal to hide.
+ */
+function hideModal(modalId) {
+  document.getElementById(modalId).classList.add("hidden");
+  if (modalId === "productDetailModal") {
+    currentProduct = null; // Clear current product when modal is closed
   }
-  if (hasHalfStar) {
-    stars += `<i class="fas fa-star-half-alt ${sizeClass}"></i>`;
+}
+
+/**
+ * Toggles the visibility of the cart sidebar.
+ */
+function toggleCart() {
+  document.getElementById("cartSidebar").classList.toggle("open");
+}
+
+/**
+ * Displays a toast notification.
+ * @param {string} message - The message to display.
+ * @param {string} type - 'success', 'error', or default (info).
+ */
+function showToast(message, type = "") {
+  const toastContainer = document.getElementById("toastContainer");
+  const toast = document.createElement("div");
+  toast.classList.add("toast");
+  if (type) {
+    toast.classList.add(type);
   }
-  const emptyStars = 5 - Math.ceil(rating);
-  for (let i = 0; i < emptyStars; i++) {
-    stars += `<i class="far fa-star ${sizeClass}"></i>`;
-  }
-  return stars;
+  toast.textContent = message;
+  toastContainer.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 3000); // Remove after 3 seconds (animation takes 3s total)
 }
 
 // ---------------------------------------------------------------------------------
-// 4. CORE FUNCTIONALITY
+// 4. CART & FAVORITE ACTIONS
 // ---------------------------------------------------------------------------------
 
 /**
- * Adds an item to the cart.
- * @param {object} item - The item to add.
+ * Toggles a product in/out of favorites.
+ * @param {Event} event - The click event.
+ * @param {number} productId - The ID of the product.
+ * @param {boolean} fromDetail - True if called from product detail page.
  */
-function addToCart(item) {
+function toggleFavorite(event, productId, fromDetail = false) {
+  event.stopPropagation(); // Prevent triggering product detail modal
+
+  const index = favorites.indexOf(productId);
+  if (index > -1) {
+    favorites.splice(index, 1);
+    showToast("تمت إزالة المنتج من المفضلة.", "success");
+  } else {
+    favorites.push(productId);
+    showToast("تمت إضافة المنتج إلى المفضلة.", "success");
+  }
+  StorageManager.saveFavorites(favorites);
+  if (currentPage === "home") {
+    loadProducts(); // Re-render product cards on home page to update heart icons
+  } else if (currentPage === "favorites") {
+    loadFavoritesPage(); // Re-render favorites page
+  }
+  if (fromDetail) {
+    // Update the button in the modal itself
+    const favBtn = event.currentTarget;
+    if (favBtn) {
+      favBtn.classList.toggle("active");
+      favBtn.querySelector('i').classList.toggle('fas');
+      favBtn.querySelector('i').classList.toggle('far');
+      favBtn.title = favorites.includes(productId) ? "إزالة من المفضلة" : "إضافة للمفضلة";
+      favBtn.innerHTML = favorites.includes(productId) ? '<i class="fas fa-heart"></i> إزالة من المفضلة' : '<i class="far fa-heart"></i> إضافة للمفضلة';
+    }
+  }
+}
+
+/**
+ * Adds a product to the cart from the product detail modal.
+ */
+function addToCartFromDetail() {
+  if (!currentProduct) return;
+
+  const selectedQuantity = parseInt(
+    document.getElementById("detailQuantity").textContent
+  );
+  const selectedColor =
+    document.getElementById("productDetailModal").dataset.selectedColor;
+  const selectedSize =
+    document.getElementById("productDetailModal").dataset.selectedSize;
+
+  // Basic validation for options if they exist
+  if (currentProduct.colors && !selectedColor) {
+    showToast("الرجاء اختيار لون المنتج.", "error");
+    return;
+  }
+  if (currentProduct.sizes && !selectedSize) {
+    showToast("الرجاء اختيار مقاس المنتج.", "error");
+    return;
+  }
+
+  addToCart(currentProduct.id, selectedQuantity, selectedColor, selectedSize);
+  hideModal("productDetailModal");
+  toggleCart(); // Open cart sidebar after adding
+}
+
+/**
+ * Adds a product to the cart.
+ * @param {number} productId - The ID of the product.
+ * @param {number} quantity - The quantity to add.
+ * @param {string} selectedColor - The selected color (optional).
+ * @param {string} selectedSize - The selected size (optional).
+ */
+function addToCart(productId, quantity = 1, selectedColor = "", selectedSize = "") {
+  const product = productsData.products.find((p) => p.id === productId);
+  if (!product) return;
+
+  // Check if item with same ID, color, and size already exists in cart
   const existingItemIndex = cart.findIndex(
-    (cartItem) =>
-      cartItem.productId === item.productId &&
-      cartItem.color === item.color &&
-      cartItem.size === item.size
+    (item) =>
+      item.id === productId &&
+      item.selectedColor === selectedColor &&
+      item.selectedSize === selectedSize
   );
 
   if (existingItemIndex > -1) {
-    cart[existingItemIndex].quantity += item.quantity;
+    cart[existingItemIndex].quantity += quantity;
   } else {
-    cart.push(item);
+    cart.push({
+      id: productId,
+      name: product.name,
+      price: product.currentPrice,
+      image: product.mainImage,
+      quantity: quantity,
+      selectedColor: selectedColor,
+      selectedSize: selectedSize,
+    });
   }
 
   StorageManager.saveCart(cart);
-  updateCartUI();
   updateCartCount();
+  updateCartUI();
+  showToast("تمت إضافة المنتج إلى السلة.", "success");
 }
 
 /**
- * Quick adds a product with default options to the cart.
- * @param {number} productId - The ID of the product to add.
+ * Adds a product directly to the cart, opening its detail if options are needed.
+ * @param {number} productId - The ID of the product.
  */
 function quickAddToCart(productId) {
   const product = productsData.products.find((p) => p.id === productId);
   if (!product) return;
 
-  const cartItem = {
-    id: Date.now(),
-    productId: product.id,
-    name: product.name,
-    price: product.currentPrice,
-    image: product.mainImage,
-    color: product.colors[0]?.name || null,
-    size: product.sizes[0] || null,
-    quantity: 1,
-  };
-
-  addToCart(cartItem);
-  showNotification(`تمت إضافة "${product.name}" إلى السلة!`, "success");
-}
-
-/**
- * Removes an item from the cart by its index.
- */
-function removeFromCart(index) {
-  cart.splice(index, 1);
-  StorageManager.saveCart(cart);
-  updateCartUI();
-  updateCartCount();
-  showNotification("تم حذف المنتج من السلة", "info");
-}
-
-/**
- * Updates the quantity of a cart item.
- */
-function updateCartItemQuantity(index, change) {
-  if (cart[index]) {
-    cart[index].quantity += change;
-    if (cart[index].quantity <= 0) {
-      removeFromCart(index);
-    } else {
-      if (cart[index].quantity > 10) cart[index].quantity = 10;
-      StorageManager.saveCart(cart);
-      updateCartUI();
-      updateCartCount();
-    }
-  }
-}
-
-/**
- * Toggles a product in the favorites list.
- */
-function toggleFavorite(event, productId) {
-  event.stopPropagation(); // Prevent card click
-  const index = favorites.indexOf(productId);
-  const favoriteBtn = event.currentTarget;
-  const icon = favoriteBtn.querySelector("i");
-
-  if (index > -1) {
-    favorites.splice(index, 1);
-    showNotification("تمت الإزالة من المفضلة", "info");
-    favoriteBtn.classList.remove("active");
-    icon.classList.replace("fa-heart", "fa-heart-o");
+  // If product has colors or sizes, show detail modal first
+  if ((product.colors && product.colors.length > 0) || (product.sizes && product.sizes.length > 0)) {
+    showProductDetail(productId);
+    showToast("الرجاء اختيار الخيارات قبل الشراء.", "info");
   } else {
-    favorites.push(productId);
-    showNotification("تمت الإضافة إلى المفضلة ❤️", "success");
-    favoriteBtn.classList.add("active");
-    icon.classList.replace("fa-heart-o", "fa-heart");
-    favoriteBtn.style.animation = "heartBeat 0.6s ease-in-out";
-    setTimeout(() => (favoriteBtn.style.animation = ""), 600);
+    addToCart(productId, 1, "", ""); // Add with default empty options
+    toggleCart(); // Open cart sidebar
   }
-  StorageManager.saveFavorites(favorites);
-  loadProducts(); // Redraw to update favorite states
 }
 
-// ---------------------------------------------------------------------------------
-// 5. PAGE & MODAL NAVIGATION
-// ---------------------------------------------------------------------------------
 
 /**
- * Switches between 'home' and 'checkout' pages.
+ * Changes the quantity of an item in the cart.
+ * @param {number} productId - The ID of the product.
+ * @param {string} color - The selected color.
+ * @param {string} size - The selected size.
+ * @param {number} delta - The change in quantity (-1 or 1).
  */
-function showPage(page) {
-  document.getElementById("homePage").classList.add("hidden");
-  document.getElementById("checkoutPage").classList.add("hidden");
+function changeQuantity(productId, color, size, delta) {
+  const itemIndex = cart.findIndex(
+    (item) =>
+      item.id === productId &&
+      item.selectedColor === color &&
+      item.selectedSize === size
+  );
 
-  if (page === "home") {
-    document.getElementById("homePage").classList.remove("hidden");
-  } else if (page === "checkout") {
-    document.getElementById("checkoutPage").classList.remove("hidden");
-    renderCheckoutPage();
-  }
-
-  currentPage = page;
-  window.scrollTo(0, 0);
-  closeModal();
-  if (document.getElementById("cartSidebar").classList.contains("open")) {
-    toggleCart();
+  if (itemIndex > -1) {
+    cart[itemIndex].quantity += delta;
+    if (cart[itemIndex].quantity <= 0) {
+      cart.splice(itemIndex, 1); // Remove if quantity is 0 or less
+    }
+    StorageManager.saveCart(cart);
+    updateCartCount();
+    updateCartUI();
   }
 }
 
 /**
- * Displays the product detail modal.
+ * Removes an item from the cart.
+ * @param {number} productId - The ID of the product to remove.
+ * @param {string} color - The selected color.
+ * @param {string} size - The selected size.
  */
-function showProductDetail(productId) {
-  currentProduct = productsData.products.find((p) => p.id === productId);
-  if (!currentProduct) return;
-
-  const modal = document.getElementById("productModal");
-  const content = document.getElementById("productDetailContent");
-
-  content.innerHTML = createProductDetailHTML(currentProduct);
-  modal.classList.remove("hidden");
-  document.body.style.overflow = "hidden";
-}
-
-/**
- * Closes any open modal.
- */
-function closeModal() {
-  const modal = document.getElementById("productModal");
-  modal.classList.add("hidden");
-  document.body.style.overflow = "auto";
-}
-
-/**
- * Toggles the cart sidebar visibility.
- */
-function toggleCart() {
-  const cartSidebar = document.getElementById("cartSidebar");
-  const isOpen = cartSidebar.classList.toggle("open");
-  document.body.style.overflow = isOpen ? "hidden" : "auto";
+function removeItemFromCart(productId, color, size) {
+  const initialLength = cart.length;
+  cart = cart.filter(
+    (item) =>
+      !(
+        item.id === productId &&
+        item.selectedColor === color &&
+        item.selectedSize === size
+      )
+  );
+  if (cart.length < initialLength) {
+    StorageManager.saveCart(cart);
+    updateCartCount();
+    updateCartUI();
+    showToast("تمت إزالة المنتج من السلة.", "success");
+  }
 }
 
 // ---------------------------------------------------------------------------------
-// 6. EVENT HANDLERS & DYNAMIC CONTENT
+// 5. CHECKOUT & ORDER HANDLING
 // ---------------------------------------------------------------------------------
 
 /**
- * Handles adding a configured item to the cart from the modal.
+ * Displays the checkout form and populates it with cart summary.
  */
-function addToCartFromModal() {
-  const selectedColor =
-    document.querySelector(".color-option.selected")?.dataset.color ||
-    currentProduct.colors[0]?.name ||
-    null;
-  const selectedSize =
-    document.querySelector(".size-option.selected")?.dataset.size ||
-    currentProduct.sizes[0] ||
-    null;
-  const quantity = parseInt(document.getElementById("quantity").value);
+function showCheckoutForm() {
+  hideModal("productDetailModal"); // Ensure product detail is hidden
+  toggleCart(); // Close cart sidebar
 
-  const cartItem = {
-    id: Date.now(),
-    productId: currentProduct.id,
-    name: currentProduct.name,
-    price: currentProduct.currentPrice,
-    image: currentProduct.mainImage,
-    color: selectedColor,
-    size: selectedSize,
-    quantity: quantity,
-  };
+  const checkoutModal = document.getElementById("checkoutModal");
+  const checkoutSummaryEl = document.getElementById("checkoutSummary");
+  const checkoutFinalTotalEl = document.getElementById("checkoutFinalTotal");
 
-  addToCart(cartItem);
-  closeModal();
-  showNotification("تمت إضافة المنتج للسلة بنجاح!", "success");
-}
-
-/**
- * Adds to cart from modal and goes to checkout.
- */
-function buyNowFromModal() {
-  addToCartFromModal();
-  proceedToCheckout();
-}
-
-/**
- * Creates the HTML for the product detail view inside the modal.
- */
-function createProductDetailHTML(product) {
-  const thumbnails = product.images
-    .map(
-      (img, index) =>
-        `<img src="${img}" class="thumbnail ${
-          index === 0 ? "active" : ""
-        }" onclick="changeMainImage('${img}', this)">`
-    )
-    .join("");
-
-  const colorOptions = product.colors
-    .map(
-      (color) =>
-        `<div class="color-option" style="background-color: ${color.code}" title="${color.name}" onclick="selectOption(this)" data-color="${color.name}"></div>`
-    )
-    .join("");
-
-  const sizeOptions = product.sizes
-    .map(
-      (size) =>
-        `<div class="size-option" onclick="selectOption(this)" data-size="${size}">${size}</div>`
-    )
-    .join("");
-
-  return `
-    <div class="product-detail">
-        <div class="product-gallery">
-            <img src="${product.mainImage}" alt="${
-    product.name
-  }" class="main-image" id="mainImage">
-            <div class="image-thumbnails">${thumbnails}</div>
-        </div>
-        <div class="product-details">
-            <h1>${product.name}</h1>
-            <div class="product-rating">
-                <div class="stars">${generateStars(product.rating)}</div>
-                <span class="rating-text">(${product.reviews} تقييم)</span>
-            </div>
-            <div class="price-section">
-                <span class="current-price">${product.currentPrice} جنيه</span>
-                ${
-                  product.originalPrice > product.currentPrice
-                    ? `<span class="original-price">${product.originalPrice} جنيه</span>`
-                    : ""
-                }
-                ${
-                  product.discount > 0
-                    ? `<span class="discount-badge">خصم ${product.discount}%</span>`
-                    : ""
-                }
-            </div>
-            ${
-              product.colors.length > 1
-                ? `<div class="option-group">
-                    <label class="option-label">اللون:</label>
-                    <div class="color-options">${colorOptions}</div>
-                   </div>`
-                : ""
-            }
-            ${
-              product.sizes.length > 1 && product.sizes[0] !== "مقاس واحد"
-                ? `<div class="option-group">
-                    <label class="option-label">المقاس:</label>
-                    <div class="size-options">${sizeOptions}</div>
-                   </div>`
-                : ""
-            }
-            <div class="quantity-section">
-                <label class="option-label">الكمية:</label>
-                <div class="quantity-controls">
-                    <button class="quantity-btn" onclick="changeQuantity(-1)">-</button>
-                    <input type="number" id="quantity" class="quantity-input" value="1" min="1" max="10" readonly>
-                    <button class="quantity-btn" onclick="changeQuantity(1)">+</button>
-                </div>
-            </div>
-            <div class="add-to-cart-section">
-                <button class="btn btn-primary btn-large" onclick="addToCartFromModal()">
-                    <i class="fas fa-cart-plus"></i> إضافة للسلة
-                </button>
-                <button class="btn btn-secondary btn-large" onclick="buyNowFromModal()">
-                    <i class="fas fa-bolt"></i> شراء الآن
-                </button>
-            </div>
-            <div class="product-tabs">
-                <div class="tab-buttons">
-                    <button class="tab-btn active" onclick="showTab('details', this)">التفاصيل</button>
-                    <button class="tab-btn" onclick="showTab('specs', this)">المواصفات</button>
-                    <button class="tab-btn" onclick="showTab('return', this)">الضمان والاسترجاع</button>
-                </div>
-                <div id="tabContent" class="tab-content">
-                    <div id="details" class="tab-pane">${product.details}</div>
-                    <div id="specs" class="tab-pane hidden"><ul>${product.specifications
-                      .map((s) => `<li>${s}</li>`)
-                      .join("")}</ul></div>
-                    <div id="return" class="tab-pane hidden"><p>${
-                      product.warranty
-                    }. ${product.returnPolicy}.</p></div>
-                </div>
-            </div>
-        </div>
-    </div>`;
-}
-
-// Handler functions for the product detail modal
-function changeMainImage(src, thumb) {
-  document.getElementById("mainImage").src = src;
-  document
-    .querySelectorAll(".thumbnail.active")
-    .forEach((t) => t.classList.remove("active"));
-  thumb.classList.add("active");
-}
-
-function selectOption(el) {
-  const parent = el.parentElement;
-  parent
-    .querySelectorAll(`.${el.className}`)
-    .forEach((opt) => opt.classList.remove("selected"));
-  el.classList.add("selected");
-}
-
-function changeQuantity(change) {
-  const input = document.getElementById("quantity");
-  let val = parseInt(input.value) + change;
-  if (val < 1) val = 1;
-  if (val > 10) val = 10;
-  input.value = val;
-}
-
-function showTab(tabId, button) {
-  document
-    .querySelectorAll(".tab-pane")
-    .forEach((p) => p.classList.add("hidden"));
-  document.getElementById(tabId).classList.remove("hidden");
-  document
-    .querySelectorAll(".tab-btn.active")
-    .forEach((b) => b.classList.remove("active"));
-  button.classList.add("active");
-}
-
-// ---------------------------------------------------------------------------------
-// 7. CHECKOUT PROCESS
-// ---------------------------------------------------------------------------------
-
-function proceedToCheckout() {
   if (cart.length === 0) {
-    showNotification("السلة فارغة! يرجى إضافة منتجات أولاً.", "error");
+    showToast("سلة التسوق فارغة لا يمكن إتمام الشراء.", "error");
     return;
   }
-  showPage("checkout");
-}
 
-/**
- * Renders the checkout form.
- */
-function renderCheckoutPage() {
-  const checkoutPage = document.getElementById("checkoutPage");
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const deliveryFee = total > 500 ? 0 : 30;
-  const finalTotal = total + deliveryFee;
-
-  let summaryHTML = "";
+  checkoutSummaryEl.innerHTML = "";
+  let subtotal = 0;
   cart.forEach((item) => {
-    summaryHTML += `<div class="summary-item"><span>${item.name} × ${item.quantity}</span><span>${item.price * item.quantity} جنيه</span></div>`;
+    subtotal += item.price * item.quantity;
+    checkoutSummaryEl.innerHTML += `
+            <div class="checkout-item">
+                <span>${item.name} (${item.quantity}x)</span>
+                <span>${item.price * item.quantity} جنيه</span>
+            </div>
+        `;
   });
 
-  const governorateOptions = [
-    "القاهرة", "الجيزة", "الإسكندرية", "الدقهلية", "الشرقية", "القليوبية",
-    "الغربية", "المنوفية", "البحيرة", "بورسعيد", "الإسماعيلية", "السويس",
-    "كفر الشيخ", "دمياط", "الفيوم", "بني سويف", "المنيا", "أسيوط", "سوهاج",
-    "قنا", "الأقصر", "أسوان", "البحر الأحمر", "الوادي الجديد", "مطروح",
-    "شمال سيناء", "جنوب سيناء",
-  ].map(gov => `<option value="${gov}">${gov}</option>`).join('');
+  const shipping = calculateShipping();
+  checkoutSummaryEl.innerHTML += `
+        <div class="checkout-item">
+            <span>تكلفة الشحن</span>
+            <span>${shipping} جنيه</span>
+        </div>
+    `;
 
-  checkoutPage.innerHTML = `
-    <div class="checkout-form">
-        <h2 class="form-title"><i class="fas fa-shopping-bag"></i> إتمام الطلب</h2>
-        <div class="order-summary">
-            <h3 class="summary-title">ملخص الطلب</h3>
-            <div id="orderSummary">${summaryHTML}</div>
-            <div class="summary-item"><span>رسوم التوصيل</span><span>${deliveryFee === 0 ? 'مجاناً' : deliveryFee + ' جنيه'}</span></div>
-            <div class="summary-total"><span>الإجمالي النهائي</span><span>${finalTotal} جنيه</span></div>
-        </div>
-        <form id="orderForm" onsubmit="submitOrder(event)">
-            <div class="form-group">
-                <label class="form-label" for="fullName"><i class="fas fa-user"></i> الاسم الكامل *</label>
-                <input type="text" id="fullName" class="form-input" required />
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label" for="phone"><i class="fas fa-phone"></i> رقم الهاتف *</label>
-                    <input type="tel" id="phone" class="form-input" required />
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="governorate"><i class="fas fa-map-marker-alt"></i> المحافظة *</label>
-                    <select id="governorate" class="form-select" required>
-                        <option value="">اختر المحافظة</option>
-                        ${governorateOptions}
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="form-label" for="address"><i class="fas fa-home"></i> العنوان التفصيلي *</label>
-                <textarea id="address" class="form-input" rows="3" placeholder="المنطقة، الشارع، رقم العقار..." required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary btn-large"><i class="fas fa-check"></i> تأكيد الطلب - الدفع عند الاستلام</button>
-        </form>
-        <div style="text-align: center; margin-top: 20px;">
-            <button class="btn btn-secondary" onclick="showPage('home')"><i class="fas fa-arrow-right"></i> العودة للتسوق</button>
-        </div>
-    </div>`;
+  checkoutFinalTotalEl.textContent = `${subtotal + shipping} جنيه`;
+  checkoutModal.classList.remove("hidden");
 }
 
 /**
- * Handles form submission and order processing.
+ * Calculates shipping cost based on cart total (example logic).
+ * @returns {number} - The shipping cost.
  */
-function submitOrder(event) {
-  event.preventDefault();
-  const form = event.target;
-  const submitBtn = form.querySelector('button[type="submit"]');
-
-  // Validation
-  const phoneRegex = /^(01)[0125][0-9]{8}$/;
-  const phone = document.getElementById("phone").value;
-  if (!phoneRegex.test(phone)) {
-    showNotification("من فضلك أدخل رقم هاتف مصري صحيح (11 رقم).", "error");
-    return;
+function calculateShipping() {
+  const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  if (subtotal >= 1000) {
+    return 0; // Free shipping for orders over 1000 EGP
+  } else if (subtotal > 0) {
+    return 50; // Flat rate shipping
   }
+  return 0; // No shipping cost if cart is empty
+}
 
-  const orderData = {
-    fullName: document.getElementById("fullName").value,
-    phone: phone,
-    governorate: document.getElementById("governorate").value,
-    address: document.getElementById("address").value,
-    orderNumber: Math.floor(Math.random() * 900000) + 100000,
-    orderDate: new Date().toISOString(),
-    orderItems: [...cart],
-    total: cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
-    status: 'pending', // جديد
-    trackingSteps: [ // جديد
-      {step: 'تم استلام الطلب', completed: true, date: new Date().toISOString()},
-      {step: 'جاري المراجعة', completed: false, date: null},
-      {step: 'تم التأكيد', completed: false, date: null},
-      {step: 'جاري التحضير', completed: false, date: null},
-      {step: 'خرج للتوصيل', completed: false, date: null},
-      {step: 'تم التسليم', completed: false, date: null}
-    ]
-  };
-  orderData.deliveryFee = orderData.total > 500 ? 0 : 30;
-  orderData.finalTotal = orderData.total + orderData.deliveryFee;
 
-  // Simulate submission
-  const originalText = submitBtn.innerHTML;
-  submitBtn.disabled = true;
-  submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> جاري إرسال الطلب...`;
+/**
+ * Sets up the event listener for the checkout form submission.
+ */
+function setupOrderForm() {
+  const checkoutForm = document.getElementById("checkoutForm");
+  if (checkoutForm) {
+    checkoutForm.addEventListener("submit", function (event) {
+      event.preventDefault(); // Prevent default form submission
 
-  // إرسال للتليجرام أولاً
-  sendToTelegram(orderData).then(sent => {
-    setTimeout(() => {
-      StorageManager.saveOrderHistory(orderData);
-      cart = [];
-      StorageManager.saveCart(cart);
-      updateCartUI();
-      updateCartCount();
-      
-      if (sent) {
-        showNotification("تم إرسال طلبك بنجاح!", "success");
+      if (validateForm()) {
+        submitOrder();
+      } else {
+        showToast("الرجاء مراجعة البيانات المدخلة.", "error");
       }
-      
-      showOrderSuccess(orderData);
-    }, 1500);
-  });
+    });
+  }
 }
 
 /**
- * Displays the order success message.
+ * Validates the checkout form fields.
+ * @returns {boolean} - True if form is valid, false otherwise.
  */
-function showOrderSuccess(orderData) {
-  const checkoutPage = document.getElementById("checkoutPage");
-  checkoutPage.innerHTML = `
-    <div class="order-success-container">
-        <div class="success-animation">
-            <div class="checkmark-circle"><i class="fas fa-check"></i></div>
-        </div>
-        <h2 class="success-title">🎉 تم استلام طلبك بنجاح!</h2>
-        <div class="order-details-card">
-            <div class="order-header">
-                <h3>تفاصيل الطلب</h3>
-                <span class="order-number">#${orderData.orderNumber}</span>
-            </div>
-            <div class="order-info-grid">
-                <div class="info-item"><i class="fas fa-user"></i><span>العميل: ${orderData.fullName}</span></div>
-                <div class="info-item"><i class="fas fa-phone"></i><span>الهاتف: ${orderData.phone}</span></div>
-                <div class="info-item"><i class="fas fa-map-marker-alt"></i><span>المحافظة: ${orderData.governorate}</span></div>
-                <div class="info-item"><i class="fas fa-money-bill-wave"></i><span>الإجمالي: ${orderData.finalTotal} جنيه</span></div>
-            </div>
-        </div>
-        <div class="delivery-timeline">
-            <h4>📦 حالة الطلب</h4>
-            <div class="timeline-steps">
-                <div class="step active"><div class="step-icon">✅</div><span>تم استلام الطلب</span></div>
-                <div class="step"><div class="step-icon">📞</div><span>سيتم الاتصال بك خلال 24 ساعة للتأكيد</span></div>
-                <div class="step"><div class="step-icon">🚚</div><span>التوصيل المتوقع خلال 2-4 أيام عمل</span></div>
-            </div>
-        </div>
-        <div class="payment-info">
-            <div class="payment-method"><i class="fas fa-hand-holding-usd"></i><strong>الدفع عند الاستلام</strong></div>
-            <p>سيتم تحصيل ${orderData.finalTotal} جنيه عند استلامك الطلب.</p>
-        </div>
-        <div class="action-buttons">
-            <button class="btn btn-primary btn-large" onclick="showPage('home')"><i class="fas fa-shopping-bag"></i> متابعة التسوق</button>
-        </div>
-    </div>`;
+function validateForm() {
+    let isValid = true;
+    const fields = [
+        { id: 'customerName', msg: 'الاسم كاملاً مطلوب.' },
+        { id: 'customerPhone', msg: 'رقم الهاتف مطلوب وصالح.', pattern: /^[0-9]{10,}$/ },
+        { id: 'customerAddress', msg: 'العنوان مطلوب.' },
+        { id: 'customerCity', msg: 'المدينة مطلوبة.' }
+    ];
+
+    fields.forEach(field => {
+        const input = document.getElementById(field.id);
+        const errorDiv = document.getElementById(field.id + 'Error');
+        errorDiv.textContent = ''; // Clear previous errors
+        input.classList.remove('invalid');
+        errorDiv.style.display = 'none';
+
+        if (!input.value.trim()) {
+            errorDiv.textContent = field.msg;
+            errorDiv.style.display = 'block';
+            input.classList.add('invalid');
+            isValid = false;
+        } else if (field.pattern && !field.pattern.test(input.value.trim())) {
+            errorDiv.textContent = field.msg;
+            errorDiv.style.display = 'block';
+            input.classList.add('invalid');
+            isValid = false;
+        }
+    });
+    return isValid;
 }
-// تتبع الطلب
+
+
+/**
+ * Submits the order, simulates sending to Telegram, and resets cart.
+ */
+async function submitOrder() {
+  const customerName = document.getElementById("customerName").value;
+  const customerPhone = document.getElementById("customerPhone").value;
+  const customerAddress = document.getElementById("customerAddress").value;
+  const customerCity = document.getElementById("customerCity").value;
+  const shippingMethod = document.getElementById("shippingMethod").value;
+  const finalTotal = document.getElementById("checkoutFinalTotal").textContent;
+
+  const orderId = `#${Math.floor(10000 + Math.random() * 90000)}`; // Simple unique ID
+  const orderDate = new Date().toLocaleString("ar-EG", { timeZone: "Africa/Cairo" });
+
+  const orderDetails = {
+    orderId: orderId,
+    date: orderDate,
+    customer: {
+      name: customerName,
+      phone: customerPhone,
+      address: customerAddress,
+      city: customerCity,
+    },
+    items: cart.map((item) => ({
+      id: item.id,
+      name: item.name,
+      quantity: item.quantity,
+      price: item.price,
+      color: item.selectedColor,
+      size: item.selectedSize,
+    })),
+    shippingMethod: shippingMethod,
+    total: finalTotal,
+    status: "قيد المراجعة", // Initial status
+  };
+
+  StorageManager.saveOrderHistory(orderDetails); // Save order to history
+
+  // Send order to Telegram (simulated for frontend-only)
+  const telegramMessage = formatOrderForTelegram(orderDetails);
+  const sent = await sendOrderToTelegram(telegramMessage);
+
+  if (sent) {
+    cart = []; // Clear cart after successful order
+    StorageManager.saveCart(cart);
+    updateCartCount();
+    updateCartUI();
+    hideModal("checkoutModal");
+    showToast("تم تأكيد طلبك بنجاح! رقم الطلب: " + orderId, "success");
+    // Optionally show order tracking directly
+    setTimeout(() => {
+        document.getElementById("orderIdInput").value = orderId;
+        trackOrder();
+    }, 1000);
+
+  } else {
+    showToast("حدث خطأ أثناء إرسال الطلب. الرجاء المحاولة مرة أخرى.", "error");
+  }
+}
+
+/**
+ * Formats order details into a human-readable message for Telegram.
+ * @param {object} order - The order object.
+ * @returns {string} - Formatted message string.
+ */
+function formatOrderForTelegram(order) {
+  let message = `*طلب جديد!* \n\n`;
+  message += `*رقم الطلب:* ${order.orderId}\n`;
+  message += `*التاريخ:* ${order.date}\n\n`;
+  message += `*بيانات العميل:*\n`;
+  message += `الاسم: ${order.customer.name}\n`;
+  message += `الهاتف: ${order.customer.phone}\n`;
+  message += `العنوان: ${order.customer.address}, ${order.customer.city}\n`;
+  message += `طريقة الشحن: ${order.shippingMethod}\n\n`;
+  message += `*المنتجات:*\n`;
+  order.items.forEach((item, index) => {
+    message += `${index + 1}. ${item.name} (${item.quantity}x) - ${
+      item.price
+    } جنيه\n`;
+    if (item.color) message += `   اللون: ${item.color}\n`;
+    if (item.size) message += `   المقاس: ${item.size}\n`;
+  });
+  message += `\n*الإجمالي الكلي:* ${order.total}\n`;
+  message += `*حالة الطلب:* ${order.status}\n`;
+  return message;
+}
+
+/**
+ * Sends a message to a Telegram bot.
+ * NOTE: This requires a backend proxy or CORS setup for real-world use.
+ * For this client-side example, it will likely fail due to CORS.
+ * It's included to show the intended flow.
+ * @param {string} message - The message to send.
+ * @returns {Promise<boolean>} - True if successful, false otherwise.
+ */
+async function sendOrderToTelegram(message) {
+  const { BOT_TOKEN, CHAT_ID } = TELEGRAM_CONFIG;
+  const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+  const params = new URLSearchParams({
+    chat_id: CHAT_ID,
+    text: message,
+    parse_mode: 'Markdown' // Use Markdown for formatting
+  });
+
+  try {
+    const response = await fetch(`${url}?${params.toString()}`, {
+      method: 'GET', // Or POST with body, GET is simpler for testing
+    });
+    const data = await response.json();
+    if (!response.ok) {
+        console.error("Telegram API Error:", data);
+        showToast("فشل إرسال الطلب إلى تيليجرام: " + (data.description || "خطأ غير معروف"), "error");
+        return false;
+    }
+    if (data.ok) {
+        console.log("Order sent to Telegram:", data);
+        return true;
+    } else {
+        console.error("Failed to send order to Telegram:", data);
+        showToast("فشل إرسال الطلب إلى تيليجرام: " + (data.description || "خطأ غير معروف"), "error");
+        return false;
+    }
+  } catch (error) {
+    console.error("Error sending message to Telegram:", error);
+    showToast("حدث خطأ في الاتصال بخدمة تيليجرام.", "error");
+    return false;
+  }
+}
+
+/**
+ * Shows the order tracking modal.
+ */
 function trackOrder() {
-  const orderNumber = prompt("أدخل رقم الطلب للتتبع:");
-  if (!orderNumber) return;
-  
-  const orders = StorageManager.getOrderHistory();
-  const order = orders.find(o => o.orderNumber.toString() === orderNumber.toString());
-  
-  if (!order) {
-    showNotification("رقم الطلب غير صحيح", "error");
+  hideModal("checkoutModal"); // Ensure checkout is hidden
+  hideModal("productDetailModal"); // Ensure product detail is hidden
+  document.getElementById("orderTrackingModal").classList.remove("hidden");
+  document.getElementById("orderDetails").innerHTML = ''; // Clear previous results
+  document.getElementById("orderIdInput").value = ''; // Clear input
+}
+
+/**
+ * Finds and displays order details based on the entered order ID.
+ */
+function findOrderDetails() {
+  const orderIdInput = document.getElementById("orderIdInput").value.trim();
+  const orderDetailsDiv = document.getElementById("orderDetails");
+  const orderHistory = StorageManager.getOrderHistory();
+
+  orderDetailsDiv.innerHTML = ""; // Clear previous content
+
+  if (!orderIdInput) {
+    orderDetailsDiv.innerHTML = `<p style="color: #ff4757;">الرجاء إدخال رقم الطلب.</p>`;
     return;
   }
-  
-  showOrderTracking(order);
+
+  const order = orderHistory.find((o) => o.orderId === orderIdInput);
+
+  if (order) {
+    let itemsHtml = order.items.map(item => `
+        <li>
+            ${item.name} (${item.quantity}x) - ${item.price} جنيه
+            ${item.color ? ` (لون: ${item.color})` : ''}
+            ${item.size ? ` (مقاس: ${item.size})` : ''}
+        </li>
+    `).join('');
+
+    orderDetailsDiv.innerHTML = `
+            <h3>تفاصيل الطلب: ${order.orderId}</h3>
+            <p><strong>تاريخ الطلب:</strong> ${order.date}</p>
+            <p><strong>اسم العميل:</strong> ${order.customer.name}</p>
+            <p><strong>رقم الهاتف:</strong> ${order.customer.phone}</p>
+            <p><strong>العنوان:</strong> ${order.customer.address}, ${order.customer.city}</p>
+            <p><strong>طريقة الشحن:</strong> ${order.shippingMethod === 'standard' ? 'شحن عادي' : 'شحن سريع'}</p>
+            <p><strong>إجمالي المبلغ:</strong> ${order.total}</p>
+            <p><strong>المنتجات:</strong></p>
+            <ul>${itemsHtml}</ul>
+            <p class="order-status ${getStatusClass(order.status)}"><strong>الحالة:</strong> ${order.status}</p>
+        `;
+  } else {
+    orderDetailsDiv.innerHTML = `<p style="color: #ff4757;">عذراً، لم يتم العثور على طلب بهذا الرقم. الرجاء التحقق من الرقم والمحاولة مرة أخرى.</p>`;
+  }
 }
 
-function showOrderTracking(order) {
-  const modal = document.getElementById("productModal");
-  const content = document.getElementById("productDetailContent");
-  
-  const trackingHTML = `
-    <div style="padding: 20px;">
-      <h2 style="color: #00ddff; margin-bottom: 20px;">
-        <i class="fas fa-shipping-fast"></i> تتبع الطلب #${order.orderNumber}
-      </h2>
-      <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 15px; margin-bottom: 20px;">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-          <div><i class="fas fa-user"></i> العميل: ${order.fullName}</div>
-          <div><i class="fas fa-phone"></i> الهاتف: ${order.phone}</div>
-          <div><i class="fas fa-calendar"></i> تاريخ الطلب: ${new Date(order.orderDate).toLocaleDateString('ar-EG')}</div>
-          <div><i class="fas fa-money-bill"></i> المبلغ: ${order.finalTotal} جنيه</div>
-        </div>
-      </div>
-      
-      <div style="background: rgba(0,221,255,0.1); padding: 20px; border-radius: 15px;">
-        <h3 style="color: #00ddff; margin-bottom: 15px;">مراحل الطلب</h3>
-        ${order.trackingSteps.map((step, index) => `
-          <div style="display: flex; align-items: center; padding: 10px 0; opacity: ${step.completed ? '1' : '0.5'};">
-            <div style="width: 30px; height: 30px; border-radius: 50%; background: ${step.completed ? '#00ff88' : 'rgba(255,255,255,0.1)'}; 
-                        display: flex; align-items: center; justify-content: center; margin-left: 15px;">
-              ${step.completed ? '<i class="fas fa-check" style="color: #000;"></i>' : index + 1}
-            </div>
-            <div>
-              <div style="font-weight: bold; color: ${step.completed ? '#00ff88' : '#fff'};">${step.step}</div>
-              ${step.date ? `<div style="font-size: 12px; color: rgba(255,255,255,0.6);">${new Date(step.date).toLocaleString('ar-EG')}</div>` : ''}
-            </div>
-          </div>
-        `).join('')}
-      </div>
-      
-      <div style="text-align: center; margin-top: 20px;">
-        <button class="btn btn-secondary" onclick="closeModal()">إغلاق</button>
-      </div>
-    </div>
-  `;
-  
-  content.innerHTML = trackingHTML;
-  modal.classList.remove("hidden");
-  document.body.style.overflow = "hidden";
+/**
+ * Returns a CSS class based on order status for styling.
+ * @param {string} status - The order status.
+ * @returns {string} - CSS class name.
+ */
+function getStatusClass(status) {
+    switch(status) {
+        case "قيد المراجعة": return "pending";
+        case "قيد التجهيز": return "processing";
+        case "تم الشحن": return "shipped";
+        case "تم التسليم": return "delivered";
+        case "ملغى": return "cancelled";
+        default: return "";
+    }
 }
+
+
 // ---------------------------------------------------------------------------------
-// 8. INITIALIZATION & GLOBAL EVENT LISTENERS
+// 6. FAVORITES PAGE
+// ---------------------------------------------------------------------------------
+/**
+ * Loads and displays favorite products.
+ */
+function loadFavoritesPage() {
+    currentPage = "favorites";
+    document.getElementById("homePage").classList.add("hidden");
+    document.getElementById("favoritesPage").classList.remove("hidden");
+    document.getElementById("orderTrackingModal").classList.add("hidden"); // Hide tracking if open
+    document.getElementById("productDetailModal").classList.add("hidden"); // Hide detail if open
+    document.getElementById("checkoutModal").classList.add("hidden"); // Hide checkout if open
+
+
+    const favoritesGrid = document.getElementById("favoritesGrid");
+    const noFavoritesMessage = document.getElementById("noFavoritesMessage");
+
+    favoritesGrid.innerHTML = ""; // Clear existing cards
+
+    if (favorites.length === 0) {
+        noFavoritesMessage.classList.remove("hidden");
+        return;
+    } else {
+        noFavoritesMessage.classList.add("hidden");
+    }
+
+    const favoriteProducts = productsData.products.filter(product => favorites.includes(product.id));
+
+    if (favoriteProducts.length === 0) {
+        noFavoritesMessage.classList.remove("hidden");
+        return;
+    }
+
+    favoriteProducts.forEach((product, index) => {
+        setTimeout(() => {
+            const productCardHTML = createProductCardHTML(product);
+            const tempDiv = document.createElement("div");
+            tempDiv.innerHTML = productCardHTML;
+            tempDiv.firstElementChild.style.animation = "fadeIn 0.5s ease forwards";
+            favoritesGrid.appendChild(tempDiv.firstElementChild);
+        }, index * 100);
+    });
+}
+
+// Function to return to home page
+function loadHomePage() {
+    currentPage = "home";
+    document.getElementById("favoritesPage").classList.add("hidden");
+    document.getElementById("homePage").classList.remove("hidden");
+    document.getElementById("orderTrackingModal").classList.add("hidden"); // Hide tracking if open
+    document.getElementById("productDetailModal").classList.add("hidden"); // Hide detail if open
+    document.getElementById("checkoutModal").classList.add("hidden"); // Hide checkout if open
+    loadProducts(); // Reload products for home page
+}
+
+
+// ---------------------------------------------------------------------------------
+// 7. INITIALIZATION
 // ---------------------------------------------------------------------------------
 
+/**
+ * Initializes the application on page load.
+ */
 document.addEventListener("DOMContentLoaded", () => {
-  // Load data from storage
   cart = StorageManager.loadCart();
   favorites = StorageManager.loadFavorites();
-
-  // Initial render
-  loadProducts();
-  updateCartUI();
+  loadProducts(); // Load products initially on home page
   updateCartCount();
-
-  // Global event listeners
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      closeModal();
-      if (document.getElementById("cartSidebar").classList.contains("open")) {
-        toggleCart();
-      }
-    }
-  });
-
-  document.getElementById("productModal").addEventListener("click", (e) => {
-    if (e.target === e.currentTarget) {
-      closeModal();
-    }
-  });
+  updateCartUI();
+  setupOrderForm(); // Setup form submission listener
 });
