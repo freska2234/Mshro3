@@ -1,11 +1,10 @@
 // =================================================================================
-// E-COMMERCE SCRIPT
+// E-COMMERCE SCRIPT WITH ROUTING SYSTEM
 // =================================================================================
 
 // ---------------------------------------------------------------------------------
 // 1. DATA
 // ---------------------------------------------------------------------------------
-let recentOrders = [];
 
 const productsData = {
   products: [
@@ -149,7 +148,7 @@ const productsData = {
         "الألوان المتاحة: بني، أسود",
       ],
       warranty: "ضمان الصناعة لمدة سنة واحدة",
-      returnPolicy: "إمكانية الاسترداد خلال 21 يوم من الاستلام",
+      returnPolicy: "إمكانية الاسترجاع خلال 21 يوم من الاستلام",
       category: "إكسسوارات",
     },
     {
@@ -188,7 +187,6 @@ const productsData = {
       returnPolicy: "إمكانية الاسترداد خلال 14 يوم من الاستلام",
       category: "إلكترونيات",
     },
-    
     {
       id: 6,
       name: "نظارة شمسية عصرية",
@@ -229,11 +227,11 @@ const productsData = {
 
 // إعدادات بوت التليجرام
 const TELEGRAM_CONFIG = {
-  BOT_TOKEN: "7254345779:AAF2IY-f42Vj4Zgai5dlCK7yxpWhz4_S7Ac", // استبدل بـ BOT TOKEN الخاص بك
-  CHAT_ID: "5895491379", // استبدل بـ CHAT ID الخاص بك
+  BOT_TOKEN: "7254345779:AAF2IY-f42Vj4Zgai5dlCK7yxpWhz4_S7Ac",
+  CHAT_ID: "5895491379",
 };
 
-// === بيانات المحافظات والمدن ===
+// بيانات المحافظات والمدن
 const CITIES_DATA = {
   القاهرة: [
     "المعادى",
@@ -602,8 +600,14 @@ const CITIES_DATA = {
 
 let cart = [];
 let favorites = [];
+let recentOrders = [];
 let currentProduct = null;
-let currentPage = "home"; // "home", "favorites"
+let selectedColor = "";
+let selectedSize = "";
+
+// Make these globally accessible
+window.cart = cart;
+window.favorites = favorites;
 
 const StorageManager = {
   saveCart: (cartData) => {
@@ -641,8 +645,8 @@ const StorageManager = {
   saveOrderHistory: (order) => {
     try {
       let history = JSON.parse(localStorage.getItem("ecom_orderHistory")) || [];
-      history.unshift(order); // Add new order to the beginning
-      if (history.length > 10) history = history.slice(0, 10); // Keep only last 10 orders
+      history.unshift(order);
+      if (history.length > 10) history = history.slice(0, 10);
       localStorage.setItem("ecom_orderHistory", JSON.stringify(history));
     } catch (e) {
       console.error("Failed to save order history:", e);
@@ -655,165 +659,64 @@ const StorageManager = {
       return [];
     }
   },
-   saveRecentOrders: (orders) => {
-    localStorage.setItem('recentOrders', JSON.stringify(orders));
+};
+
+// ---------------------------------------------------------------------------------
+// 2. ORDER RATE LIMITING & SPAM PROTECTION
+// ---------------------------------------------------------------------------------
+
+const OrderLimiter = {
+  MAX_ORDERS_PER_DAY: 10,
+  COOLDOWN_MINUTES: 2, // منع الطلبات المتكررة لمدة دقيقتين
+
+  getOrdersToday: () => {
+    const today = new Date().toDateString();
+    const ordersHistory = StorageManager.getOrderHistory();
+    return ordersHistory.filter((order) => {
+      const orderDate = new Date(order.date).toDateString();
+      return orderDate === today;
+    });
   },
-  loadRecentOrders: () => {
-    const orders = localStorage.getItem('recentOrders');
-    return orders ? JSON.parse(orders) : [];
+
+  getLastOrderTime: () => {
+    const ordersHistory = StorageManager.getOrderHistory();
+    if (ordersHistory.length === 0) return null;
+    return new Date(ordersHistory[0].date);
+  },
+
+  canPlaceOrder: () => {
+    // Check daily limit
+    const todayOrders = OrderLimiter.getOrdersToday();
+    if (todayOrders.length >= OrderLimiter.MAX_ORDERS_PER_DAY) {
+      return {
+        allowed: false,
+        reason: `تم الوصول للحد الأقصى من الطلبات اليوم (${OrderLimiter.MAX_ORDERS_PER_DAY} طلبات). حاول مرة أخرى غداً.`,
+      };
+    }
+
+    // Check cooldown period
+    const lastOrderTime = OrderLimiter.getLastOrderTime();
+    if (lastOrderTime) {
+      const timeDiff = (new Date() - lastOrderTime) / (1000 * 60); // in minutes
+      if (timeDiff < OrderLimiter.COOLDOWN_MINUTES) {
+        const remainingTime = Math.ceil(
+          OrderLimiter.COOLDOWN_MINUTES - timeDiff
+        );
+        return {
+          allowed: false,
+          reason: `يرجى الانتظار ${remainingTime} دقيقة قبل إرسال طلب جديد.`,
+        };
+      }
+    }
+
+    return { allowed: true };
   },
 };
 
 // ---------------------------------------------------------------------------------
-// 3. UI RENDERING & UPDATES
+// 3. CART FUNCTIONS
 // ---------------------------------------------------------------------------------
 
-/**
- * Generates star icons for a given rating.
- * @param {number} rating - The product rating (e.g., 4.5).
- * @param {string} sizeClass - Optional class for sizing stars (e.g., 'mini').
- * @returns {string} - HTML string for star icons.
- */
-function generateStars(rating, sizeClass = "") {
-  let starsHtml = `<div class="stars ${sizeClass}">`;
-  const fullStars = Math.floor(rating);
-  const halfStar = rating % 1 >= 0.5;
-  const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
-
-  for (let i = 0; i < fullStars; i++) {
-    starsHtml += '<i class="fas fa-star"></i>';
-  }
-  if (halfStar) {
-    starsHtml += '<i class="fas fa-star-half-alt"></i>';
-  }
-  for (let i = 0; i < emptyStars; i++) {
-    starsHtml += '<i class="far fa-star"></i>';
-  }
-  starsHtml += "</div>";
-  return starsHtml;
-}
-
-/**
- * Creates HTML for a single product card.
- * @param {object} product - The product data.
- * @returns {string} - The HTML string for the product card.
- */
-function createProductCardHTML(product) {
-  const isFavorite = favorites.includes(product.id);
-  const favoriteIcon = isFavorite ? "fas fa-heart" : "far fa-heart";
-  const discountBadge =
-    product.discount > 0
-      ? `<div class="product-badge">${product.badge}</div>`
-      : "";
-
-  return `
-    <div class="product-card">
-        ${discountBadge}
-        <div class="product-overlay">
-            <button class="overlay-btn favorite-btn ${
-              isFavorite ? "active" : ""
-            }" onclick="toggleFavorite(event, ${product.id})" title="${
-    isFavorite ? "إزالة من المفضلة" : "إضافة للمفضلة"
-  }">
-                <i class="${favoriteIcon}"></i>
-            </button>
-            <button class="overlay-btn" onclick="showProductDetail(${
-              product.id
-            })" title="عرض سريع">
-                <i class="fas fa-eye"></i>
-            </button>
-        </div>
-        <div class="product-image">
-            <img src="${product.mainImage}" alt="${
-    product.name
-  }" loading="lazy">
-        </div>
-        <div class="product-info">
-            <div class="product-rating-mini">
-                ${generateStars(product.rating, "mini")}
-                <span class="rating-count">(${product.reviews})</span>
-            </div>
-            <h3 class="product-title">${product.name}</h3>
-            <p class="product-description">${product.description}</p>
-            <div class="product-price">
-                <span class="current-price">${product.currentPrice} جنيه</span>
-                ${
-                  product.originalPrice > product.currentPrice
-                    ? `<span class="original-price">${product.originalPrice} جنيه</span>`
-                    : ""
-                }
-            </div>
-            <div class="product-actions">
-                <button class="btn btn-primary" onclick="showProductDetail(${
-                  product.id
-                })">
-                    <i class="fas fa-info-circle"></i> التفاصيل
-                </button>
-                <button class="btn btn-secondary" onclick="quickAddToCart(${
-                  product.id
-                })">
-                    <i class="fas fa-bolt"></i> شراء الآن
-                </button>
-            </div>
-        </div>
-    </div>
-    `;
-}
-
-/**
- * Loads all products into the main grid with a fade-in animation.
- */
-function loadProducts() {
-  const productsGrid = document.getElementById("productsGrid");
-  if (!productsGrid) return;
-  productsGrid.innerHTML = "";
-  let filtered = productsData.products;
-
-  // Apply filters if any (initially all)
-  const searchTerm =
-    document.getElementById("searchInput")?.value.toLowerCase() || "";
-  const category = document.getElementById("categoryFilter")?.value || "all";
-  const priceRange = document.getElementById("priceFilter")?.value || "all";
-
-  filtered = productsData.products.filter((product) => {
-    const matchesSearch =
-      product.name.toLowerCase().includes(searchTerm) ||
-      product.description.toLowerCase().includes(searchTerm);
-    const matchesCategory = category === "all" || product.category === category;
-    let matchesPrice = true;
-    if (priceRange === "under200") {
-      matchesPrice = product.currentPrice < 200;
-    } else if (priceRange === "200-500") {
-      matchesPrice = product.currentPrice >= 200 && product.currentPrice <= 500;
-    } else if (priceRange === "over500") {
-      matchesPrice = product.currentPrice > 500;
-    }
-    return matchesSearch && matchesCategory && matchesPrice;
-  });
-
-  if (filtered.length === 0) {
-    productsGrid.innerHTML = `<p style="text-align: center; width: 100%; color: rgba(255,255,255,0.7); font-size: 18px; margin-top: 50px;">لا توجد منتجات مطابقة لمعايير البحث.</p>`;
-    return;
-  }
-
-  filtered.forEach((product, index) => {
-    setTimeout(() => {
-      const productCardHTML = createProductCardHTML(product);
-      const tempDiv = document.createElement("div");
-      tempDiv.innerHTML = productCardHTML;
-      tempDiv.firstElementChild.style.animation = "fadeIn 0.5s ease forwards";
-      productsGrid.appendChild(tempDiv.firstElementChild);
-    }, index * 100); // Staggered animation
-  });
-}
-
-function filterProducts() {
-  loadProducts(); // Simply re-load products with current filter values
-}
-
-/**
- * Updates the cart count bubble in the header.
- */
 function updateCartCount() {
   const cartCountEl = document.getElementById("cartCount");
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -825,9 +728,6 @@ function updateCartCount() {
   }
 }
 
-/**
- * Renders the items in the cart sidebar.
- */
 function updateCartUI() {
   const cartItemsEl = document.getElementById("cartItems");
   const cartTotalEl = document.getElementById("cartTotal");
@@ -837,13 +737,13 @@ function updateCartUI() {
 
   if (cart.length === 0) {
     cartItemsEl.innerHTML = `
-            <div style="text-align: center; padding: 40px; color: rgba(255, 255, 255, 0.6);">
-                <i class="fas fa-shopping-cart" style="font-size: 48px; margin-bottom: 20px; opacity: 0.5;"></i>
-                <p>سلة التسوق فارغة.</p>
-                <button class="btn btn-primary" onclick="toggleCart()" style="margin-top: 15px;">
-                    ابدأ التسوق الآن
-                </button>
-            </div>`;
+      <div style="text-align: center; padding: 40px; color: rgba(255, 255, 255, 0.6);">
+        <i class="fas fa-shopping-cart" style="font-size: 48px; margin-bottom: 20px; opacity: 0.5;"></i>
+        <p>سلة التسوق فارغة.</p>
+        <button class="btn btn-primary" onclick="toggleCart()" style="margin-top: 15px;">
+          ابدأ التسوق الآن
+        </button>
+      </div>`;
     cartTotalEl.textContent = "0 جنيه";
     shippingCostEl.textContent = "سيتم حسابه";
     finalTotalEl.textContent = "0 جنيه";
@@ -857,38 +757,35 @@ function updateCartUI() {
   cart.forEach((item) => {
     subtotal += item.price * item.quantity;
     const cartItemHTML = `
-            <div class="cart-item">
-                <button class="remove-item" onclick="removeItemFromCart(${
-                  item.id
-                }, '${item.selectedColor}', '${item.selectedSize}')">
-                    <i class="fas fa-times-circle"></i>
-                </button>
-                <img src="${item.image}" alt="${item.name}">
-                <div class="cart-item-info">
-                    <h4>${item.name}</h4>
-                    <p>اللون: ${item.selectedColor || "غير محدد"}</p>
-                    <p>المقاس: ${item.selectedSize || "غير محدد"}</p>
-                    <div class="quantity-control">
-                        <button onclick="changeQuantity(${item.id}, '${
+      <div class="cart-item">
+        <button class="remove-item" onclick="removeItemFromCart(${item.id}, '${
+      item.selectedColor
+    }', '${item.selectedSize}')">
+          <i class="fas fa-times-circle"></i>
+        </button>
+        <img src="${item.image}" alt="${item.name}">
+        <div class="cart-item-info">
+          <h4>${item.name}</h4>
+          <p>اللون: ${item.selectedColor || "غير محدد"}</p>
+          <p>المقاس: ${item.selectedSize || "غير محدد"}</p>
+          <div class="quantity-control">
+            <button onclick="changeQuantity(${item.id}, '${
       item.selectedColor
     }', '${item.selectedSize}', -1)">-</button>
-                        <span>${item.quantity}</span>
-                        <button onclick="changeQuantity(${item.id}, '${
+            <span>${item.quantity}</span>
+            <button onclick="changeQuantity(${item.id}, '${
       item.selectedColor
     }', '${item.selectedSize}', 1)">+</button>
-                    </div>
-                </div>
-                <span class="cart-item-price">${
-                  item.price * item.quantity
-                } جنيه</span>
-            </div>
-        `;
+          </div>
+        </div>
+        <span class="cart-item-price">${item.price * item.quantity} جنيه</span>
+      </div>
+    `;
     cartItemsEl.innerHTML += cartItemHTML;
   });
 
   cartTotalEl.textContent = `${subtotal} جنيه`;
 
-  // Calculate and display shipping and final total
   const shipping = calculateShipping();
   shippingCostEl.textContent = `${shipping} جنيه`;
   finalTotalEl.textContent = `${subtotal + shipping} جنيه`;
@@ -897,363 +794,6 @@ function updateCartUI() {
   checkoutBtn.style.opacity = "1";
 }
 
-/**
- * Displays the product detail modal with information for a specific product.
- * @param {number} productId - The ID of the product to display.
- */
-function showProductDetail(productId) {
-  currentProduct = productsData.products.find((p) => p.id === productId);
-  if (!currentProduct) {
-    showToast("خطأ: المنتج غير موجود.", "error");
-    return;
-  }
-
-  const modal = document.getElementById("productDetailModal");
-  const content = document.getElementById("productDetailContent");
-
-  let colorsHtml = "";
-  if (currentProduct.colors && currentProduct.colors.length > 0) {
-    colorsHtml = `
-            <div class="option-group">
-                <label class="option-label">الألوان المتاحة:</label>
-                <div class="color-options">
-                    ${currentProduct.colors
-                      .map(
-                        (color) => `
-                        <div class="color-box" style="background-color: ${
-                          color.code === "#ffffff"
-                            ? "#eee; border: 1px solid #ccc;"
-                            : color.code
-                        };"
-                            title="${color.name}"
-                            data-color="${color.name}"
-                            onclick="selectOption('color', '${
-                              color.name
-                            }')"></div>
-                    `
-                      )
-                      .join("")}
-                </div>
-            </div>
-        `;
-  }
-
-  let sizesHtml = "";
-  if (currentProduct.sizes && currentProduct.sizes.length > 0) {
-    sizesHtml = `
-            <div class="option-group">
-                <label class="option-label">المقاسات المتاحة:</label>
-                <div class="size-options">
-                    ${currentProduct.sizes
-                      .map(
-                        (size) => `
-                        <button class="size-btn" data-size="${size}" onclick="selectOption('size', '${size}')">${size}</button>
-                    `
-                      )
-                      .join("")}
-                </div>
-            </div>
-        `;
-  }
-
-  const isFavorite = favorites.includes(currentProduct.id);
-  const favoriteButtonClass = isFavorite ? "active" : "";
-  const favoriteButtonText = isFavorite ? "إزالة من المفضلة" : "إضافة للمفضلة";
-  const favoriteButtonIcon = isFavorite ? "fas fa-heart" : "far fa-heart";
-
-  content.innerHTML = `
-        <div class="product-gallery">
-            <img src="${currentProduct.mainImage}" alt="${
-    currentProduct.name
-  }" class="main-image" id="detailMainImage">
-            <div class="image-thumbnails">
-                ${currentProduct.images
-                  .map(
-                    (img, index) => `
-                    <img src="${img}" alt="Thumbnail ${
-                      index + 1
-                    }" class="thumbnail ${
-                      index === 0 ? "active" : ""
-                    }" onclick="changeMainImage('${img}', this)">
-                `
-                  )
-                  .join("")}
-            </div>
-        </div>
-        <div class="product-details">
-            <h1>${currentProduct.name}</h1>
-            <div class="product-rating">
-                ${generateStars(currentProduct.rating)}
-                <span class="rating-text">(${
-                  currentProduct.reviews
-                } مراجعة)</span>
-            </div>
-            <p class="product-description">${currentProduct.description}</p>
-            <div class="price-section">
-                <span class="current-price">${
-                  currentProduct.currentPrice
-                } جنيه</span>
-                ${
-                  currentProduct.originalPrice > currentProduct.currentPrice
-                    ? `<span class="original-price">${currentProduct.originalPrice} جنيه</span>`
-                    : ""
-                }
-                ${
-                  currentProduct.discount > 0
-                    ? `<span class="discount-badge">${currentProduct.discount}% خصم</span>`
-                    : ""
-                }
-            </div>
-
-            ${colorsHtml}
-            ${sizesHtml}
-
-            <div class="quantity-control">
-                <button onclick="changeDetailQuantity(-1)">-</button>
-                <span id="detailQuantity">1</span>
-                <button onclick="changeDetailQuantity(1)">+</button>
-            </div>
-
-            <div class="product-actions-detail">
-                <button class="btn btn-primary btn-large" onclick="addToCartFromDetail()">
-                    <i class="fas fa-cart-plus"></i> إضافة للسلة
-                </button>
-                <button class="btn btn-secondary btn-large favorite-btn ${favoriteButtonClass}" onclick="toggleFavorite(event, ${
-    currentProduct.id
-  }, true)">
-                    <i class="${favoriteButtonIcon}"></i> ${favoriteButtonText}
-                </button>
-            </div>
-
-            <div class="product-tabs">
-                <div class="tab-buttons">
-                    <button class="tab-button active" data-tab="details" onclick="openTab(event, 'details')">الوصف التفصيلي</button>
-                    <button class="tab-button" data-tab="specs" onclick="openTab(event, 'specs')">المواصفات</button>
-                    <button class="tab-button" data-tab="warranty" onclick="openTab(event, 'warranty')">الضمان والاسترجاع</button>
-                </div>
-                <div id="details" class="tab-content">
-                    <p>${currentProduct.details}</p>
-                </div>
-                <div id="specs" class="tab-content hidden">
-                    <ul>
-                        ${currentProduct.specifications
-                          .map(
-                            (spec) =>
-                              `<li><i class="fas fa-check-circle"></i> ${spec}</li>`
-                          )
-                          .join("")}
-                    </ul>
-                </div>
-                <div id="warranty" class="tab-content hidden">
-                    <p><strong>الضمان:</strong> ${currentProduct.warranty}</p>
-                    <p><strong>سياسة الاسترجاع:</strong> ${
-                      currentProduct.returnPolicy
-                    }</p>
-                </div>
-            </div>
-        </div>
-    `;
-
-  // Reset selected options and quantity when opening modal
-  modal.dataset.selectedColor = "";
-  modal.dataset.selectedSize = "";
-  document.getElementById("detailQuantity").textContent = "1";
-
-  // Pre-select first color/size if available
-  if (currentProduct.colors && currentProduct.colors.length > 0) {
-    selectOption("color", currentProduct.colors[0].name);
-  }
-  if (currentProduct.sizes && currentProduct.sizes.length > 0) {
-    selectOption("size", currentProduct.sizes[0]);
-  }
-
-  modal.classList.remove("hidden");
-}
-
-/**
- * Changes the main image in the product detail modal.
- * @param {string} imageSrc - The URL of the new image.
- * @param {HTMLElement} clickedThumbnail - The thumbnail element that was clicked.
- */
-function changeMainImage(imageSrc, clickedThumbnail) {
-  document.getElementById("detailMainImage").src = imageSrc;
-  document.querySelectorAll(".thumbnail").forEach((thumb) => {
-    thumb.classList.remove("active");
-  });
-  clickedThumbnail.classList.add("active");
-}
-
-/**
- * Handles tab switching in product detail modal.
- * @param {Event} event - The click event.
- * @param {string} tabName - The name of the tab to open.
- */
-function openTab(event, tabName) {
-  const tabContents = document.querySelectorAll(".tab-content");
-  tabContents.forEach((content) => content.classList.add("hidden"));
-
-  const tabButtons = document.querySelectorAll(".tab-button");
-  tabButtons.forEach((button) => button.classList.remove("active"));
-
-  document.getElementById(tabName).classList.remove("hidden");
-  event.currentTarget.classList.add("active");
-}
-
-/**
- * Selects an option (color or size) in the product detail modal.
- * @param {string} type - 'color' or 'size'.
- * @param {string} value - The selected color name or size value.
- */
-function selectOption(type, value) {
-  const modal = document.getElementById("productDetailModal");
-  if (type === "color") {
-    modal.dataset.selectedColor = value;
-    document.querySelectorAll(".color-box").forEach((box) => {
-      box.classList.remove("selected");
-      if (box.dataset.color === value) {
-        box.classList.add("selected");
-      }
-    });
-  } else if (type === "size") {
-    modal.dataset.selectedSize = value;
-    document.querySelectorAll(".size-btn").forEach((btn) => {
-      btn.classList.remove("selected");
-      if (btn.dataset.size === value) {
-        btn.classList.add("selected");
-      }
-    });
-  }
-}
-
-/**
- * Changes the quantity in the product detail modal.
- * @param {number} delta - The amount to change the quantity by (-1 or 1).
- */
-function changeDetailQuantity(delta) {
-  const quantityEl = document.getElementById("detailQuantity");
-  let quantity = parseInt(quantityEl.textContent);
-  quantity = Math.max(1, quantity + delta); // Quantity cannot be less than 1
-  quantityEl.textContent = quantity;
-}
-
-/**
- * Hides a given modal.
- * @param {string} modalId - The ID of the modal to hide.
- */
-function hideModal(modalId) {
-  document.getElementById(modalId).classList.add("hidden");
-  if (modalId === "productDetailModal") {
-    currentProduct = null; // Clear current product when modal is closed
-  }
-}
-
-/**
- * Toggles the visibility of the cart sidebar.
- */
-function toggleCart() {
-  document.getElementById("cartSidebar").classList.toggle("open");
-}
-
-/**
- * Displays a toast notification.
- * @param {string} message - The message to display.
- * @param {string} type - 'success', 'error', or default (info).
- */
-function showToast(message, type = "") {
-  const toastContainer = document.getElementById("toastContainer");
-  const toast = document.createElement("div");
-  toast.classList.add("toast");
-  if (type) {
-    toast.classList.add(type);
-  }
-  toast.textContent = message;
-  toastContainer.appendChild(toast);
-
-  setTimeout(() => {
-    toast.remove();
-  }, 3000); // Remove after 3 seconds (animation takes 3s total)
-}
-
-// ---------------------------------------------------------------------------------
-// 4. CART & FAVORITE ACTIONS
-// ---------------------------------------------------------------------------------
-
-/**
- * Toggles a product in/out of favorites.
- * @param {Event} event - The click event.
- * @param {number} productId - The ID of the product.
- * @param {boolean} fromDetail - True if called from product detail page.
- */
-function toggleFavorite(event, productId, fromDetail = false) {
-  event.stopPropagation(); // Prevent triggering product detail modal
-
-  const index = favorites.indexOf(productId);
-  if (index > -1) {
-    favorites.splice(index, 1);
-    showToast("تمت إزالة المنتج من المفضلة.", "success");
-  } else {
-    favorites.push(productId);
-    showToast("تمت إضافة المنتج إلى المفضلة.", "success");
-  }
-  StorageManager.saveFavorites(favorites);
-  if (currentPage === "home") {
-    loadProducts(); // Re-render product cards on home page to update heart icons
-  } else if (currentPage === "favorites") {
-    loadFavoritesPage(); // Re-render favorites page
-  }
-  if (fromDetail) {
-    // Update the button in the modal itself
-    const favBtn = event.currentTarget;
-    if (favBtn) {
-      favBtn.classList.toggle("active");
-      favBtn.querySelector("i").classList.toggle("fas");
-      favBtn.querySelector("i").classList.toggle("far");
-      favBtn.title = favorites.includes(productId)
-        ? "إزالة من المفضلة"
-        : "إضافة للمفضلة";
-      favBtn.innerHTML = favorites.includes(productId)
-        ? '<i class="fas fa-heart"></i> إزالة من المفضلة'
-        : '<i class="far fa-heart"></i> إضافة للمفضلة';
-    }
-  }
-}
-
-/**
- * Adds a product to the cart from the product detail modal.
- */
-function addToCartFromDetail() {
-  if (!currentProduct) return;
-
-  const selectedQuantity = parseInt(
-    document.getElementById("detailQuantity").textContent
-  );
-  const selectedColor =
-    document.getElementById("productDetailModal").dataset.selectedColor;
-  const selectedSize =
-    document.getElementById("productDetailModal").dataset.selectedSize;
-
-  // Basic validation for options if they exist
-  if (currentProduct.colors && !selectedColor) {
-    showToast("الرجاء اختيار لون المنتج.", "error");
-    return;
-  }
-  if (currentProduct.sizes && !selectedSize) {
-    showToast("الرجاء اختيار مقاس المنتج.", "error");
-    return;
-  }
-
-  addToCart(currentProduct.id, selectedQuantity, selectedColor, selectedSize);
-  hideModal("productDetailModal");
-  toggleCart(); // Open cart sidebar after adding
-}
-
-/**
- * Adds a product to the cart.
- * @param {number} productId - The ID of the product.
- * @param {number} quantity - The quantity to add.
- * @param {string} selectedColor - The selected color (optional).
- * @param {string} selectedSize - The selected size (optional).
- */
 function addToCart(
   productId,
   quantity = 1,
@@ -1263,7 +803,6 @@ function addToCart(
   const product = productsData.products.find((p) => p.id === productId);
   if (!product) return;
 
-  // Check if item with same ID, color, and size already exists in cart
   const existingItemIndex = cart.findIndex(
     (item) =>
       item.id === productId &&
@@ -1291,34 +830,22 @@ function addToCart(
   showToast("تمت إضافة المنتج إلى السلة.", "success");
 }
 
-/**
- * Adds a product directly to the cart, opening its detail if options are needed.
- * @param {number} productId - The ID of the product.
- */
 function quickAddToCart(productId) {
   const product = productsData.products.find((p) => p.id === productId);
   if (!product) return;
 
-  // If product has colors or sizes, show detail modal first
   if (
     (product.colors && product.colors.length > 0) ||
     (product.sizes && product.sizes.length > 0)
   ) {
-    showProductDetail(productId);
+    router.navigate(`/product/${productId}`);
     showToast("الرجاء اختيار الخيارات قبل الشراء.", "info");
   } else {
-    addToCart(productId, 1, "", ""); // Add with default empty options
-    toggleCart(); // Open cart sidebar
+    addToCart(productId, 1, "", "");
+    toggleCart();
   }
 }
 
-/**
- * Changes the quantity of an item in the cart.
- * @param {number} productId - The ID of the product.
- * @param {string} color - The selected color.
- * @param {string} size - The selected size.
- * @param {number} delta - The change in quantity (-1 or 1).
- */
 function changeQuantity(productId, color, size, delta) {
   const itemIndex = cart.findIndex(
     (item) =>
@@ -1330,7 +857,7 @@ function changeQuantity(productId, color, size, delta) {
   if (itemIndex > -1) {
     cart[itemIndex].quantity += delta;
     if (cart[itemIndex].quantity <= 0) {
-      cart.splice(itemIndex, 1); // Remove if quantity is 0 or less
+      cart.splice(itemIndex, 1);
     }
     StorageManager.saveCart(cart);
     updateCartCount();
@@ -1338,12 +865,6 @@ function changeQuantity(productId, color, size, delta) {
   }
 }
 
-/**
- * Removes an item from the cart.
- * @param {number} productId - The ID of the product to remove.
- * @param {string} color - The selected color.
- * @param {string} size - The selected size.
- */
 function removeItemFromCart(productId, color, size) {
   const initialLength = cart.length;
   cart = cart.filter(
@@ -1362,16 +883,212 @@ function removeItemFromCart(productId, color, size) {
   }
 }
 
+function toggleCart() {
+  document.getElementById("cartSidebar").classList.toggle("open");
+}
+
+function calculateShipping() {
+  const subtotal = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+  if (subtotal >= 1000) {
+    return 0;
+  } else if (subtotal > 0) {
+    return 50;
+  }
+  return 0;
+}
+
 // ---------------------------------------------------------------------------------
-// 5. CHECKOUT & ORDER HANDLING
+// 4. FAVORITES FUNCTIONS
 // ---------------------------------------------------------------------------------
 
-/**
- * Displays the checkout form and populates it with cart summary.
- */
+function updateFavoritesCount() {
+  const favCountEl = document.getElementById("favoritesCount");
+  if (favCountEl) {
+    favCountEl.textContent = favorites.length;
+    favCountEl.style.display = favorites.length > 0 ? "flex" : "none";
+  }
+}
+
+function toggleFavorite(event, productId, fromDetail = false) {
+  event.stopPropagation();
+
+  const index = favorites.indexOf(productId);
+  if (index > -1) {
+    favorites.splice(index, 1);
+    showToast("تمت إزالة المنتج من المفضلة.", "success");
+  } else {
+    favorites.push(productId);
+    showToast("تمت إضافة المنتج إلى المفضلة.", "success");
+  }
+
+  StorageManager.saveFavorites(favorites);
+  updateFavoritesCount();
+
+  // Update UI based on current page
+  if (router.currentRoute === "/") {
+    router.loadProducts();
+  } else if (router.currentRoute === "/favorites") {
+    router.loadFavoriteProducts();
+  } else if (router.currentRoute.startsWith("/product/")) {
+    // Update the button in the product page
+    const favBtn = document.querySelector(".favorite-btn");
+    if (favBtn) {
+      const isFavorite = favorites.includes(productId);
+      favBtn.classList.toggle("active", isFavorite);
+      favBtn.querySelector("i").className = isFavorite
+        ? "fas fa-heart"
+        : "far fa-heart";
+      favBtn.innerHTML = `<i class="${
+        isFavorite ? "fas" : "far"
+      } fa-heart"></i> ${isFavorite ? "إزالة من المفضلة" : "إضافة للمفضلة"}`;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------------
+// 5. PRODUCT PAGE FUNCTIONS
+// ---------------------------------------------------------------------------------
+
+function changeMainImage(imageSrc, clickedThumbnail) {
+  const mainImage = document.getElementById("mainImage");
+  if (mainImage) {
+    mainImage.src = imageSrc;
+    document.querySelectorAll(".thumbnail").forEach((thumb) => {
+      thumb.classList.remove("active");
+    });
+    clickedThumbnail.classList.add("active");
+  }
+}
+
+function selectOption(type, value) {
+  if (type === "color") {
+    selectedColor = value;
+    document.querySelectorAll(".color-box").forEach((box) => {
+      box.classList.remove("selected");
+      if (box.dataset.color === value) {
+        box.classList.add("selected");
+      }
+    });
+  } else if (type === "size") {
+    selectedSize = value;
+    document.querySelectorAll(".size-btn").forEach((btn) => {
+      btn.classList.remove("selected");
+      if (btn.dataset.size === value) {
+        btn.classList.add("selected");
+      }
+    });
+  }
+}
+
+function changeDetailQuantity(delta) {
+  const quantityEl = document.getElementById("detailQuantity");
+  if (quantityEl) {
+    let quantity = parseInt(quantityEl.textContent);
+    quantity = Math.max(1, quantity + delta);
+    quantityEl.textContent = quantity;
+  }
+}
+
+function addToCartFromProductPage(productId) {
+  const product = productsData.products.find((p) => p.id === productId);
+  if (!product) return;
+
+  const selectedQuantity = parseInt(
+    document.getElementById("detailQuantity")?.textContent || "1"
+  );
+
+  if (product.colors && !selectedColor) {
+    showToast("الرجاء اختيار لون المنتج.", "error");
+    return;
+  }
+  if (product.sizes && !selectedSize) {
+    showToast("الرجاء اختيار مقاس المنتج.", "error");
+    return;
+  }
+
+  addToCart(productId, selectedQuantity, selectedColor, selectedSize);
+  toggleCart();
+}
+
+function openTab(event, tabName) {
+  const tabContents = document.querySelectorAll(".tab-content");
+  tabContents.forEach((content) => content.classList.add("hidden"));
+
+  const tabButtons = document.querySelectorAll(".tab-button");
+  tabButtons.forEach((button) => button.classList.remove("active"));
+
+  const targetTab = document.getElementById(tabName);
+  if (targetTab) {
+    targetTab.classList.remove("hidden");
+  }
+  event.currentTarget.classList.add("active");
+}
+
+// ---------------------------------------------------------------------------------
+// 6. FILTERING AND SEARCH
+// ---------------------------------------------------------------------------------
+
+function filterProducts() {
+  const searchTerm =
+    document.getElementById("searchInput")?.value.toLowerCase() || "";
+  const category = document.getElementById("categoryFilter")?.value || "all";
+  const priceRange = document.getElementById("priceFilter")?.value || "all";
+
+  const productsGrid = document.getElementById("productsGrid");
+  if (!productsGrid) return;
+
+  let filtered = productsData.products.filter((product) => {
+    const matchesSearch =
+      product.name.toLowerCase().includes(searchTerm) ||
+      product.description.toLowerCase().includes(searchTerm);
+    const matchesCategory = category === "all" || product.category === category;
+    let matchesPrice = true;
+    if (priceRange === "under200") {
+      matchesPrice = product.currentPrice < 200;
+    } else if (priceRange === "200-500") {
+      matchesPrice = product.currentPrice >= 200 && product.currentPrice <= 500;
+    } else if (priceRange === "over500") {
+      matchesPrice = product.currentPrice > 500;
+    }
+    return matchesSearch && matchesCategory && matchesPrice;
+  });
+
+  productsGrid.innerHTML = "";
+
+  if (filtered.length === 0) {
+    productsGrid.innerHTML = `<p style="text-align: center; width: 100%; color: rgba(255,255,255,0.7); font-size: 18px; margin-top: 50px;">لا توجد منتجات مطابقة لمعايير البحث.</p>`;
+    return;
+  }
+
+  filtered.forEach((product, index) => {
+    setTimeout(() => {
+      const productCardHTML = router.createProductCardHTML(product);
+      const tempDiv = document.createElement("div");
+      tempDiv.innerHTML = productCardHTML;
+      tempDiv.firstElementChild.style.animation = "fadeIn 0.5s ease forwards";
+      productsGrid.appendChild(tempDiv.firstElementChild);
+    }, index * 100);
+  });
+}
+
+// ---------------------------------------------------------------------------------
+// 7. CHECKOUT FUNCTIONS WITH ANTI-SPAM
+// ---------------------------------------------------------------------------------
+
+let isSubmittingOrder = false; // منع الضغط المتكرر
+
 function showCheckoutForm() {
-  hideModal("productDetailModal"); // Ensure product detail is hidden
-  toggleCart(); // Close cart sidebar
+  toggleCart();
+
+  // Check if user can place order
+  const orderCheck = OrderLimiter.canPlaceOrder();
+  if (!orderCheck.allowed) {
+    showToast(orderCheck.reason, "error");
+    return;
+  }
 
   const checkoutModal = document.getElementById("checkoutModal");
   const checkoutSummaryEl = document.getElementById("checkoutSummary");
@@ -1387,45 +1104,47 @@ function showCheckoutForm() {
   cart.forEach((item) => {
     subtotal += item.price * item.quantity;
     checkoutSummaryEl.innerHTML += `
-            <div class="checkout-item">
-                <span>${item.name} (${item.quantity}x)</span>
-                <span>${item.price * item.quantity} جنيه</span>
-            </div>
-        `;
+      <div class="checkout-item">
+        <span>${item.name} (${item.quantity}x)</span>
+        <span>${item.price * item.quantity} جنيه</span>
+      </div>
+    `;
   });
 
   const shipping = calculateShipping();
   checkoutSummaryEl.innerHTML += `
-        <div class="checkout-item">
-            <span>تكلفة الشحن</span>
-            <span>${shipping} جنيه</span>
-        </div>
-    `;
+    <div class="checkout-item">
+      <span>تكلفة الشحن</span>
+      <span>${shipping} جنيه</span>
+    </div>
+  `;
 
   checkoutFinalTotalEl.textContent = `${subtotal + shipping} جنيه`;
   checkoutModal.classList.remove("hidden");
+
+  // Reset form state
+  isSubmittingOrder = false;
+  updateSubmitButton();
 }
 
-/**
- * Calculates shipping cost based on cart total (example logic).
- * @returns {number} - The shipping cost.
- */
-function calculateShipping() {
-  const subtotal = cart.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
+function updateSubmitButton() {
+  const submitBtn = document.querySelector(
+    '#checkoutForm button[type="submit"]'
   );
-  if (subtotal >= 1000) {
-    return 0; // Free shipping for orders over 1000 EGP
-  } else if (subtotal > 0) {
-    return 50; // Flat rate shipping
+  if (!submitBtn) return;
+
+  if (isSubmittingOrder) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML =
+      '<i class="fas fa-spinner fa-spin"></i> جاري إرسال الطلب...';
+    submitBtn.style.opacity = "0.7";
+  } else {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> تأكيد الطلب';
+    submitBtn.style.opacity = "1";
   }
-  return 0; // No shipping cost if cart is empty
 }
 
-/**
- * Sets up the event listener for the checkout form submission.
- */
 function setupOrderForm() {
   const checkoutForm = document.getElementById("checkoutForm");
   const customerGovernorateSelect = document.getElementById(
@@ -1433,13 +1152,10 @@ function setupOrderForm() {
   );
   const customerCitySelect = document.getElementById("customerCitySelect");
 
-  // Populate governorates on load
   populateGovernorates(customerGovernorateSelect);
 
-  // Event listener for governorate selection
   customerGovernorateSelect.addEventListener("change", () => {
     populateCities(customerGovernorateSelect.value, customerCitySelect);
-    // Clear city selection and disable if no governorate selected
     if (!customerGovernorateSelect.value) {
       customerCitySelect.disabled = true;
       customerCitySelect.innerHTML = '<option value="">اختر المدينة</option>';
@@ -1450,11 +1166,37 @@ function setupOrderForm() {
 
   if (checkoutForm) {
     checkoutForm.addEventListener("submit", async function (event) {
-      event.preventDefault(); // Prevent default form submission
+      event.preventDefault();
+
+      // Prevent multiple submissions
+      if (isSubmittingOrder) {
+        showToast("جاري معالجة طلبك، يرجى الانتظار...", "info");
+        return;
+      }
+
+      // Check rate limiting again before submission
+      const orderCheck = OrderLimiter.canPlaceOrder();
+      if (!orderCheck.allowed) {
+        showToast(orderCheck.reason, "error");
+        return;
+      }
 
       if (validateCheckoutForm()) {
-        // Changed from validateForm to validateCheckoutForm
-        submitOrder();
+        isSubmittingOrder = true;
+        updateSubmitButton();
+
+        try {
+          await submitOrder();
+        } catch (error) {
+          console.error("Order submission error:", error);
+          showToast(
+            "حدث خطأ أثناء إرسال الطلب. الرجاء المحاولة مرة أخرى.",
+            "error"
+          );
+        } finally {
+          isSubmittingOrder = false;
+          updateSubmitButton();
+        }
       } else {
         showToast("الرجاء مراجعة البيانات المدخلة.", "error");
       }
@@ -1462,20 +1204,14 @@ function setupOrderForm() {
   }
 }
 
-/**
- * Validates the checkout form fields.
- * @returns {boolean} - True if form is valid, false otherwise.
- */
 function validateCheckoutForm() {
-  // Renamed from validateForm to validateCheckoutForm
   let isValid = true;
   const customerName = document.getElementById("customerName");
   const customerPhone = document.getElementById("customerPhone");
-  const customerGovernorate = document.getElementById("customerGovernorate"); // New
-  const customerCitySelect = document.getElementById("customerCitySelect"); // New
+  const customerGovernorate = document.getElementById("customerGovernorate");
+  const customerCitySelect = document.getElementById("customerCitySelect");
   const customerAddress = document.getElementById("customerAddress");
 
-  // Validate Name
   if (!customerName.value.trim()) {
     displayError("customerNameError", "الاسم كاملاً مطلوب.");
     isValid = false;
@@ -1483,7 +1219,6 @@ function validateCheckoutForm() {
     displayError("customerNameError", "");
   }
 
-  // Validate Phone
   const phonePattern = /^[0-9]{10,}$/;
   if (!customerPhone.value.trim()) {
     displayError("customerPhoneError", "رقم الهاتف مطلوب.");
@@ -1498,7 +1233,6 @@ function validateCheckoutForm() {
     displayError("customerPhoneError", "");
   }
 
-  // Validate Governorate
   if (customerGovernorate.value === "") {
     displayError("customerGovernorateError", "الرجاء اختيار المحافظة.");
     isValid = false;
@@ -1506,7 +1240,6 @@ function validateCheckoutForm() {
     displayError("customerGovernorateError", "");
   }
 
-  // Validate City
   if (customerCitySelect.value === "") {
     displayError("customerCitySelectError", "الرجاء اختيار المدينة.");
     isValid = false;
@@ -1514,7 +1247,6 @@ function validateCheckoutForm() {
     displayError("customerCitySelectError", "");
   }
 
-  // Validate Address
   if (!customerAddress.value.trim()) {
     displayError("customerAddressError", "العنوان مطلوب.");
     isValid = false;
@@ -1525,17 +1257,12 @@ function validateCheckoutForm() {
   return isValid;
 }
 
-/**
- * Helper function to display form errors.
- * @param {string} elementId - The ID of the error message div.
- * @param {string} message - The error message.
- */
 function displayError(elementId, message) {
   const errorDiv = document.getElementById(elementId);
   if (errorDiv) {
     errorDiv.textContent = message;
     errorDiv.style.display = message ? "block" : "none";
-    const inputElement = errorDiv.previousElementSibling; // Assuming label/input is before error div
+    const inputElement = errorDiv.previousElementSibling;
     if (
       inputElement &&
       (inputElement.tagName === "INPUT" ||
@@ -1551,12 +1278,8 @@ function displayError(elementId, message) {
   }
 }
 
-/**
- * Populates the governorate select element.
- * @param {HTMLSelectElement} selectElement - The select element for governorates.
- */
 function populateGovernorates(selectElement) {
-  selectElement.innerHTML = '<option value="">اختر المحافظة</option>'; // Keep default option
+  selectElement.innerHTML = '<option value="">اختر المحافظة</option>';
   Object.keys(CITIES_DATA).forEach((governorate) => {
     const option = document.createElement("option");
     option.value = governorate;
@@ -1565,13 +1288,8 @@ function populateGovernorates(selectElement) {
   });
 }
 
-/**
- * Populates the city select element based on the selected governorate.
- * @param {string} governorate - The selected governorate.
- * @param {HTMLSelectElement} selectElement - The select element for cities.
- */
 function populateCities(governorate, selectElement) {
-  selectElement.innerHTML = '<option value="">اختر المدينة</option>'; // Reset cities
+  selectElement.innerHTML = '<option value="">اختر المدينة</option>';
   if (governorate && CITIES_DATA[governorate]) {
     CITIES_DATA[governorate].forEach((city) => {
       const option = document.createElement("option");
@@ -1582,24 +1300,19 @@ function populateCities(governorate, selectElement) {
   }
 }
 
-/**
- * Submits the order, simulates sending to Telegram, and resets cart.
- */
 async function submitOrder() {
   const customerName = document.getElementById("customerName").value;
   const customerPhone = document.getElementById("customerPhone").value;
   const customerGovernorate = document.getElementById(
     "customerGovernorate"
-  ).value; // تحديث
-  const customerCity = document.getElementById("customerCitySelect").value; // تحديث
+  ).value;
+  const customerCity = document.getElementById("customerCitySelect").value;
   const customerAddress = document.getElementById("customerAddress").value;
   const shippingMethod = document.getElementById("shippingMethod").value;
   const finalTotal = document.getElementById("checkoutFinalTotal").textContent;
 
-  const orderId = `#${Math.floor(10000 + Math.random() * 90000)}`; // Simple unique ID
-  const orderDate = new Date().toLocaleString("ar-EG", {
-    timeZone: "Africa/Cairo",
-  });
+  const orderId = `#${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`;
+  const orderDate = new Date().toISOString();
 
   const orderDetails = {
     orderId: orderId,
@@ -1607,8 +1320,8 @@ async function submitOrder() {
     customer: {
       name: customerName,
       phone: customerPhone,
-      governorate: customerGovernorate, // إضافة المحافظة
-      city: customerCity, // إضافة المدينة
+      governorate: customerGovernorate,
+      city: customerCity,
       address: customerAddress,
     },
     items: cart.map((item) => ({
@@ -1621,37 +1334,68 @@ async function submitOrder() {
     })),
     shippingMethod: shippingMethod,
     total: finalTotal,
-    status: "قيد المراجعة", // Initial status
+    status: "قيد المراجعة",
   };
 
-  StorageManager.saveOrderHistory(orderDetails); // Save order to history
+  // Save order before sending to prevent data loss
+  StorageManager.saveOrderHistory(orderDetails);
 
-  // Send order to Telegram (simulated for frontend-only)
   const telegramMessage = formatOrderForTelegram(orderDetails);
-  const sent = await sendOrderToTelegram(telegramMessage);
 
-  if (sent) {
-    cart = []; // Clear cart after successful order
+  try {
+    const sent = await sendOrderToTelegram(telegramMessage);
+
+    if (sent) {
+      // Clear cart after successful order
+      cart = [];
+      StorageManager.saveCart(cart);
+      window.cart = cart;
+
+      updateCartCount();
+      updateCartUI();
+      hideModal("checkoutModal");
+
+      showToast("تم تأكيد طلبك بنجاح! رقم الطلب: " + orderId, "success");
+
+      // Show order tracking after a delay
+      setTimeout(() => {
+        document.getElementById("orderIdInput").value = orderId;
+        trackOrder();
+      }, 2000);
+    } else {
+      // If telegram failed, still keep the order but inform user
+      showToast(
+        "تم حفظ طلبك محلياً، لكن فشل إرسال الإشعار. رقم الطلب: " + orderId,
+        "info"
+      );
+
+      // Clear cart anyway since order is saved
+      cart = [];
+      StorageManager.saveCart(cart);
+      window.cart = cart;
+
+      updateCartCount();
+      updateCartUI();
+      hideModal("checkoutModal");
+    }
+  } catch (error) {
+    console.error("Order submission failed:", error);
+    showToast(
+      "حدث خطأ أثناء إرسال الطلب. تم حفظ طلبك محلياً برقم: " + orderId,
+      "error"
+    );
+
+    // Still clear cart as order is saved locally
+    cart = [];
     StorageManager.saveCart(cart);
+    window.cart = cart;
+
     updateCartCount();
     updateCartUI();
     hideModal("checkoutModal");
-    showToast("تم تأكيد طلبك بنجاح! رقم الطلب: " + orderId, "success");
-    // Optionally show order tracking directly
-    setTimeout(() => {
-      document.getElementById("orderIdInput").value = orderId;
-      trackOrder();
-    }, 1000);
-  } else {
-    showToast("حدث خطأ أثناء إرسال الطلب. الرجاء المحاولة مرة أخرى.", "error");
   }
 }
 
-/**
- * Formats order details into a human-readable message for Telegram.
- * @param {object} order - The order object.
- * @returns {string} - Formatted message string.
- */
 function formatOrderForTelegram(order) {
   let message = `*طلب جديد!* \n\n`;
   message += `*رقم الطلب:* ${order.orderId}\n`;
@@ -1659,8 +1403,8 @@ function formatOrderForTelegram(order) {
   message += `*بيانات العميل:*\n`;
   message += `الاسم: ${order.customer.name}\n`;
   message += `الهاتف: ${order.customer.phone}\n`;
-  message += `المحافظة: ${order.customer.governorate}\n`; // إضافة المحافظة
-  message += `المدينة: ${order.customer.city}\n`; // إضافة المدينة
+  message += `المحافظة: ${order.customer.governorate}\n`;
+  message += `المدينة: ${order.customer.city}\n`;
   message += `العنوان بالتفصيل: ${order.customer.address}\n`;
   message += `طريقة الشحن: ${order.shippingMethod}\n\n`;
   message += `*المنتجات:*\n`;
@@ -1676,76 +1420,62 @@ function formatOrderForTelegram(order) {
   return message;
 }
 
-/**
- * Sends a message to a Telegram bot.
- * NOTE: This requires a backend proxy or CORS setup for real-world use.
- * For this client-side example, it will likely fail due to CORS.
- * It's included to show the intended flow.
- * @param {string} message - The message to send.
- * @returns {Promise<boolean>} - True if successful, false otherwise.
- */
 async function sendOrderToTelegram(message) {
   const { BOT_TOKEN, CHAT_ID } = TELEGRAM_CONFIG;
   const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-  const params = new URLSearchParams({
+
+  const params = {
     chat_id: CHAT_ID,
     text: message,
-    parse_mode: "Markdown", // Use Markdown for formatting
-  });
+    parse_mode: "Markdown",
+  };
 
   try {
-    const response = await fetch(`${url}?${params.toString()}`, {
-      method: "GET", // Or POST with body, GET is simpler for testing
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(params),
     });
+
     const data = await response.json();
+
     if (!response.ok) {
       console.error("Telegram API Error:", data);
-      showToast(
-        "فشل إرسال الطلب إلى تيليجرام: " +
-          (data.description || "خطأ غير معروف"),
-        "error"
-      );
       return false;
     }
+
     if (data.ok) {
-      console.log("Order sent to Telegram:", data);
+      console.log("Order sent to Telegram successfully:", data);
       return true;
     } else {
       console.error("Failed to send order to Telegram:", data);
-      showToast(
-        "فشل إرسال الطلب إلى تيليجرام: " +
-          (data.description || "خطأ غير معروف"),
-        "error"
-      );
       return false;
     }
   } catch (error) {
-    console.error("Error sending message to Telegram:", error);
-    showToast("حدث خطأ في الاتصال بخدمة تيليجرام.", "error");
+    console.error("Network error sending message to Telegram:", error);
     return false;
   }
 }
 
-/**
- * Shows the order tracking modal.
- */
+// ---------------------------------------------------------------------------------
+// 8. ORDER TRACKING
+// ---------------------------------------------------------------------------------
+
 function trackOrder() {
-  hideModal("checkoutModal"); // Ensure checkout is hidden
-  hideModal("productDetailModal"); // Ensure product detail is hidden
+  hideModal("checkoutModal");
   document.getElementById("orderTrackingModal").classList.remove("hidden");
-  document.getElementById("orderDetails").innerHTML = ""; // Clear previous results
-  document.getElementById("orderIdInput").value = ""; // Clear input
+  document.getElementById("orderDetails").innerHTML = "";
+  document.getElementById("orderIdInput").value = "";
 }
 
-/**
- * Finds and displays order details based on the entered order ID.
- */
 function findOrderDetails() {
   const orderIdInput = document.getElementById("orderIdInput").value.trim();
   const orderDetailsDiv = document.getElementById("orderDetails");
   const orderHistory = StorageManager.getOrderHistory();
 
-  orderDetailsDiv.innerHTML = ""; // Clear previous content
+  orderDetailsDiv.innerHTML = "";
 
   if (!orderIdInput) {
     orderDetailsDiv.innerHTML = `<p style="color: #ff4757;">الرجاء إدخال رقم الطلب.</p>`;
@@ -1759,42 +1489,43 @@ function findOrderDetails() {
       .map(
         (item) => `
         <li>
-            ${item.name} (${item.quantity}x) - ${item.price} جنيه
-            ${item.color ? ` (لون: ${item.color})` : ""}
-            ${item.size ? ` (مقاس: ${item.size})` : ""}
+          ${item.name} (${item.quantity}x) - ${item.price} جنيه
+          ${item.color ? ` (لون: ${item.color})` : ""}
+          ${item.size ? ` (مقاس: ${item.size})` : ""}
         </li>
-    `
+      `
       )
       .join("");
 
     orderDetailsDiv.innerHTML = `
-            <h3>تفاصيل الطلب: ${order.orderId}</h3>
-            <p><strong>تاريخ الطلب:</strong> ${order.date}</p>
-            <p><strong>اسم العميل:</strong> ${order.customer.name}</p>
-            <p><strong>رقم الهاتف:</strong> ${order.customer.phone}</p>
-            <p><strong>العنوان:</strong> ${order.customer.address}, ${
+      <h3>تفاصيل الطلب: ${order.orderId}</h3>
+      <p><strong>تاريخ الطلب:</strong> ${order.date}</p>
+      <p><strong>اسم العميل:</strong> ${order.customer.name}</p>
+      <p><strong>رقم الهاتف:</strong> ${order.customer.phone}</p>
+      <p><strong>العنوان:</strong> ${order.customer.address}, ${
       order.customer.city
     }</p>
-            <p><strong>طريقة الشحن:</strong> ${
-              order.shippingMethod === "standard" ? "شحن عادي" : "شحن سريع"
-            }</p>
-            <p><strong>إجمالي المبلغ:</strong> ${order.total}</p>
-            <p><strong>المنتجات:</strong></p>
-            <ul>${itemsHtml}</ul>
-            <p class="order-status ${getStatusClass(
-              order.status
-            )}"><strong>الحالة:</strong> ${order.status}</p>
-        `;
+      <p><strong>طريقة الشحن:</strong> ${
+        order.shippingMethod === "standard" ? "شحن عادي" : "شحن سريع"
+      }</p>
+      <p><strong>إجمالي المبلغ:</strong> ${order.total}</p>
+      <p><strong>المنتجات:</strong></p>
+      <ul>${itemsHtml}</ul>
+      <p class="order-status ${getStatusClass(
+        order.status
+      )}"><strong>الحالة:</strong> ${order.status}</p>
+    `;
   } else {
     orderDetailsDiv.innerHTML = `<p style="color: #ff4757;">عذراً، لم يتم العثور على طلب بهذا الرقم. الرجاء التحقق من الرقم والمحاولة مرة أخرى.</p>`;
   }
 }
 
-/**
- * Returns a CSS class based on order status for styling.
- * @param {string} status - The order status.
- * @returns {string} - CSS class name.
- */
+function showOrderDetails(orderId) {
+  document.getElementById("orderIdInput").value = orderId;
+  trackOrder();
+  findOrderDetails();
+}
+
 function getStatusClass(status) {
   switch (status) {
     case "قيد المراجعة":
@@ -1813,74 +1544,55 @@ function getStatusClass(status) {
 }
 
 // ---------------------------------------------------------------------------------
-// 6. FAVORITES PAGE
+// 9. UI UTILITIES
 // ---------------------------------------------------------------------------------
-/**
- * Loads and displays favorite products.
- */
-function loadFavoritesPage() {
-  currentPage = "favorites";
-  document.getElementById("homePage").classList.add("hidden");
-  document.getElementById("favoritesPage").classList.remove("hidden");
-  document.getElementById("orderTrackingModal").classList.add("hidden"); // Hide tracking if open
-  document.getElementById("productDetailModal").classList.add("hidden"); // Hide detail if open
-  document.getElementById("checkoutModal").classList.add("hidden"); // Hide checkout if open
 
-  const favoritesGrid = document.getElementById("favoritesGrid");
-  const noFavoritesMessage = document.getElementById("noFavoritesMessage");
-
-  favoritesGrid.innerHTML = ""; // Clear existing cards
-
-  if (favorites.length === 0) {
-    noFavoritesMessage.classList.remove("hidden");
-    return;
-  } else {
-    noFavoritesMessage.classList.add("hidden");
-  }
-
-  const favoriteProducts = productsData.products.filter((product) =>
-    favorites.includes(product.id)
-  );
-
-  if (favoriteProducts.length === 0) {
-    noFavoritesMessage.classList.remove("hidden");
-    return;
-  }
-
-  favoriteProducts.forEach((product, index) => {
-    setTimeout(() => {
-      const productCardHTML = createProductCardHTML(product);
-      const tempDiv = document.createElement("div");
-      tempDiv.innerHTML = productCardHTML;
-      tempDiv.firstElementChild.style.animation = "fadeIn 0.5s ease forwards";
-      favoritesGrid.appendChild(tempDiv.firstElementChild);
-    }, index * 100);
-  });
+function hideModal(modalId) {
+  document.getElementById(modalId).classList.add("hidden");
 }
 
-// Function to return to home page
-function loadHomePage() {
-  currentPage = "home";
-  document.getElementById("favoritesPage").classList.add("hidden");
-  document.getElementById("homePage").classList.remove("hidden");
-  document.getElementById("orderTrackingModal").classList.add("hidden"); // Hide tracking if open
-  document.getElementById("productDetailModal").classList.add("hidden"); // Hide detail if open
-  document.getElementById("checkoutModal").classList.add("hidden"); // Hide checkout if open
-  loadProducts(); // Reload products for home page
+function showToast(message, type = "") {
+  const toastContainer = document.getElementById("toastContainer");
+  const toast = document.createElement("div");
+  toast.classList.add("toast");
+  if (type) {
+    toast.classList.add(type);
+  }
+  toast.textContent = message;
+  toastContainer.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 3000);
 }
 
 // ---------------------------------------------------------------------------------
-// 7. INITIALIZATION
+// 10. INITIALIZATION
 // ---------------------------------------------------------------------------------
 
-/**
- * Initializes the application on page load.
- */
 document.addEventListener("DOMContentLoaded", () => {
+  // Load data first
   cart = StorageManager.loadCart();
   favorites = StorageManager.loadFavorites();
-  loadProducts(); // Load products initially on home page
+
+  // Make globally accessible
+  window.cart = cart;
+  window.favorites = favorites;
+
+  // Update UI
   updateCartCount();
   updateCartUI();
-  setupOrderForm(); // Setup form submission listener
+  updateFavoritesCount();
+  setupOrderForm();
+
+  // Initialize selected options
+  selectedColor = "";
+  selectedSize = "";
+
+  console.log(
+    "Script loaded, cart:",
+    cart.length,
+    "favorites:",
+    favorites.length
+  );
 });
