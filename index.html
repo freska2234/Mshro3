@@ -16,7 +16,9 @@
   </head>
   <body>
     <header>
-      <div class="logo"><i class="fas fa-store"></i> Nubalya Store</div>
+      <a href="#" class="logo" onclick="router.navigate('')">
+        <i class="fas fa-store"></i> Nubalya Store
+      </a>
       <div class="header-actions">
         <div class="cart-icon" onclick="toggleCart()">
           <i class="fas fa-shopping-cart"></i>
@@ -29,110 +31,40 @@
         >
           <i class="fas fa-search"></i> تتبع الطلب
         </button>
-        <button
+        <a
+          href="#"
           class="btn btn-secondary"
-          onclick="loadFavoritesPage()"
+          onclick="router.navigate('favorites')"
           style="margin-left: 15px"
         >
           <i class="fas fa-heart"></i> المفضلة
           <span class="favorites-count" id="favoritesCount">0</span>
-        </button>
-        <button
+        </a>
+        <a
+          href="#"
           class="btn btn-secondary"
-          onclick="loadRecentOrdersPage()"
+          onclick="router.navigate('orders')"
           style="margin-left: 15px"
         >
           <i class="fas fa-history"></i> طلباتي الأخيرة
-        </button>
+        </a>
       </div>
     </header>
 
-    <main class="main-content">
-      <section class="products-section" id="homePage">
-        <h2 class="section-title">منتجاتنا المميزة</h2>
-        <div class="filter-controls">
-          <input
-            type="text"
-            id="searchInput"
-            onkeyup="filterProducts()"
-            placeholder="ابحث عن منتج..."
-          />
-          <select id="categoryFilter" onchange="filterProducts()">
-            <option value="all">كل الفئات</option>
-            <option value="ملابس">ملابس</option>
-            <option value="أحذية">أحذية</option>
-            <option value="إلكترونيات">إلكترونيات</option>
-            <option value="إكسسوارات">إكسسوارات</option>
-          </select>
-          <select id="priceFilter" onchange="filterProducts()">
-            <option value="all">كل الأسعار</option>
-            <option value="under200">أقل من 200 جنيه</option>
-            <option value="200-500">200 - 500 جنيه</option>
-            <option value="over500">أكثر من 500 جنيه</option>
-          </select>
-        </div>
-        <div class="products-grid" id="productsGrid"></div>
-      </section>
+    <!-- Breadcrumb Navigation -->
+    <nav class="breadcrumb" id="breadcrumb">
+      <!-- Breadcrumb will be populated by JavaScript -->
+    </nav>
 
-      <section class="products-section hidden" id="favoritesPage">
-        <h2 class="section-title">منتجاتك المفضلة</h2>
-        <div class="products-grid" id="favoritesGrid"></div>
-        <p
-          id="noFavoritesMessage"
-          class="hidden"
-          style="
-            text-align: center;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 18px;
-            margin-top: 50px;
-          "
-        >
-          لا توجد منتجات في قائمة المفضلة بعد.
-        </p>
-      </section>
-
-      <section class="products-section hidden" id="recentOrdersPage">
-        <h2 class="section-title">طلباتي الأخيرة</h2>
-        <div id="recentOrdersList" class="recent-orders-list"></div>
-        <p
-          id="noRecentOrdersMessage"
-          class="hidden"
-          style="
-            text-align: center;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 18px;
-            margin-top: 50px;
-          "
-        >
-          لم تقم بأي طلبات بعد.
-        </p>
-      </section>
-
-      <div id="orderTrackingModal" class="modal hidden">
-        <div class="modal-content">
-          <button class="modal-close" onclick="hideModal('orderTrackingModal')">
-            &times;
-          </button>
-          <h2>تتبع طلبك</h2>
-          <div class="form-group">
-            <label for="orderIdInput">أدخل رقم الطلب:</label>
-            <input type="text" id="orderIdInput" placeholder="مثال: #12345" />
-          </div>
-          <button
-            class="btn btn-primary btn-large"
-            onclick="findOrderDetails()"
-          >
-            <i class="fas fa-truck"></i> بحث عن الطلب
-          </button>
-          <div id="orderDetails" class="order-details-display"></div>
-        </div>
-      </div>
+    <main class="main-content" id="app">
+      <!-- Content will be populated by router -->
     </main>
 
     <footer>
       <p>&copy; 2024 متجر نوباليا. جميع الحقوق محفوظة.</p>
     </footer>
 
+    <!-- Cart Sidebar -->
     <div class="cart-sidebar" id="cartSidebar">
       <div class="cart-header">
         <h3>سلة التسوق</h3>
@@ -163,15 +95,28 @@
       </div>
     </div>
 
-    <div id="productDetailModal" class="modal hidden">
-      <div class="modal-content product-detail-modal-content">
-        <button class="modal-close" onclick="hideModal('productDetailModal')">
+    <!-- Order Tracking Modal -->
+    <div id="orderTrackingModal" class="modal hidden">
+      <div class="modal-content">
+        <button class="modal-close" onclick="hideModal('orderTrackingModal')">
           &times;
         </button>
-        <div class="product-detail" id="productDetailContent"></div>
+        <h2>تتبع طلبك</h2>
+        <div class="form-group">
+          <label for="orderIdInput">أدخل رقم الطلب:</label>
+          <input type="text" id="orderIdInput" placeholder="مثال: #12345" />
+        </div>
+        <button
+          class="btn btn-primary btn-large"
+          onclick="findOrderDetails()"
+        >
+          <i class="fas fa-truck"></i> بحث عن الطلب
+        </button>
+        <div id="orderDetails" class="order-details-display"></div>
       </div>
     </div>
 
+    <!-- Checkout Modal -->
     <div id="checkoutModal" class="modal hidden">
       <div class="modal-content">
         <button class="modal-close" onclick="hideModal('checkoutModal')">
@@ -252,8 +197,11 @@
       </div>
     </div>
 
+    <!-- Toast Container -->
     <div id="toastContainer" class="toast-container"></div>
 
+    <!-- Load scripts -->
     <script src="script.js"></script>
+    <script src="router.js"></script>
   </body>
 </html>
